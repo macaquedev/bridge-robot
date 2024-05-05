@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Watching MainCam</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="/static/scripts/auction.js"></script>
+    <style>
+        #top-label,
+        #right-label,
+        #bottom-label,
+        #left-label {
+            color: black;
+        }
+
+        .vulnerable {
+            color: red !important;
+        }
+
+        .non-vulnerable {
+            color: green !important;
+        }
+
+        #left-label,
+        #right-label {
+            position: absolute;
+            top: calc(50% - 50px);
+            width: 20px;
+            height: 100px;
+            margin-top: -50px;
+            text-align: center;
+            transform-origin: center center;
+        }
+
+
+        #right-label {
+            left: 20px;
+            transform: rotate(-90deg);
+        }
+
+        #left-label {
+            right: 20px;
+            transform: rotate(90deg);
+        }
+
+        .row {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .col-lg-6 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #output {
+            flex-grow: 1;
+        }
+
+        auction-table {
+            flex-grow: 1;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .card-body {
+            padding: 20px;
+            /* Add this line */
+        }
+
+        #output {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center;
+            justify-items: center;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Watching MainCam</h1>
+        <h2 class="text-center mb-4">Hand {{ boardnumber }}, Dealer: {{ dealer }}, Vulnerability: {{ vulnerability }}
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="top-label" class="text-center mb-3"></div>
+                        <div class="grid-container">
+                            <div id="left-label" class="text-right nowrap"></div>
+                            <img id="output" src="" class="rounded">
+                            <div id="right-label" class="text-left nowrap"></div>
+                        </div>
+                        <div id="bottom-label" class="text-center mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <auction-table></auction-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var socket = io.connect('http://127.0.0.1:5000');
+        var labelsDisplayed = false;
+        socket.on('image', function (msg) {
+            document.getElementById('output').src = 'data:image/jpeg;base64,' + msg;
+            if (!labelsDisplayed) {
+                var northDirection = localStorage.getItem('northDirection');
+                var directions = ['North', 'East', 'South', 'West'];
+                var labels = {};
+                var vulnerability = '{{ vulnerability }}';
+                var dealer = '{{ dealer }}'
+                if (northDirection) {
+                    var rotationMap = {
+                        'top': 0,
+                        'right': 1,
+                        'bottom': 2,
+                        'left': 3
+                    };
+                    var rotation = rotationMap[northDirection];
+                    directions = directions.slice(rotation).concat(directions.slice(0, rotation));
+                }
+
+                ['top', 'right', 'bottom', 'left'].forEach(function (direction, i) {
+                    labels[direction + '-label'] = directions[i];
+                });
+
+                for (var id in labels) {
+                    var labelText = labels[id];
+                    if (labelText === dealer) {
+                        labelText = 'Dealer:&nbsp;' + labelText;
+                    }
+                    var labelElement = $('#' + id);
+                    labelElement.html(labelText);
+                    labelElement.removeClass('vulnerable non-vulnerable');
+                    if (vulnerability === 'ALL' || (vulnerability === 'NS' && (labels[id] === 'North' || labels[id] === 'South')) || (vulnerability === 'EW' && (labels[id] === 'East' || labels[id] === 'West'))) {
+                        labelElement.addClass('vulnerable');
+                    } else {
+                        labelElement.addClass('non-vulnerable');
+                    }
+                    console.log('id:', labels[id], 'vulnerability:', vulnerability);
+                }
+
+                labelsDisplayed = true;
+            }
+        });
+        socket.on('connect', function () {
+            console.log('Connected to server');
+        });
+    </script>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var dealer = '{{ dealer }}';
+            var vulnerability = '{{ vulnerability }}';
+            var auction = document.querySelector('auction-table');
+            console.log(dealer);
+            auction.setDealer(dealer);
+            auction.addBid('1NT');
+            auction.addBid('Pass');
+            auction.addBid('2C');
+            auction.addBid('Pass');
+            auction.addBid('2D');
+        });
+    </script>
+</body>
+
+</html>

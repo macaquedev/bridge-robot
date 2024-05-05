@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "bridge-robot"
+version = "0.1.0"
+description = ""
+authors = ["Alex Pylypenko <macaquedev@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ultralytics = "^8.1.42"
+imutils = "^0.5.4"
+pyserial = "^3.5"
+jsonformat = "^0.0.11"
+scikit-learn = "^1.4.2"
+statsmodels = "^0.14.2"
+mediapipe = "^0.10.11"
+pyevents = "^0.1.0"
+flask = "^3.0.3"
+flask-socketio = "^5.3.6"
+eventlet = "^0.36.1"
+pytesseract = "^0.3.10"
+
+
+[tool.poetry.scripts]
+main = "src.main:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[[tool.poetry.packages]]
+include = "src/*"

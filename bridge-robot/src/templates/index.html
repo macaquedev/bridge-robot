@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jacobyte</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="text-center">
+    <div class="container">
+        <div class="py-5">
+            <h1 class="display-4">Jacobyte</h1>
+        </div>
+        <div class="py-5">
+            <button id="play-button" class="btn btn-primary btn-lg">Play</button>
+            <button id="watch-button" class="btn btn-secondary btn-lg">Watch</button>
+            <button id="config-button" class="btn btn-secondary btn-lg">Config</button>
+        </div>
+        <div id="command-form" class="py-5 d-none">
+            <input type="text" id="command-input" class="form-control" name="command" placeholder="Enter command">
+            <button type="submit" class="btn btn-primary mt-3">Send</button>
+        </div>
+        <div id="output" class="py-5"></div>
+    </div>
+
+    <script>
+    $("#play-button").on("click", function() {
+        $("#command-form").removeClass("d-none");
+    });
+
+    $("#watch-button").on("click", function() {
+        window.location.href = '/watch';
+    });
+
+    $("#config-button").on("click", function() {
+        window.location.href = '/config';
+    });
+
+    $("#command-form button").on("click", function(event) {
+    event.preventDefault();
+    var command = $("#command-input").val();
+    $.ajax({
+        url: '/send_command',
+        method: 'POST',
+        data: { command: command },
+        success: function(response) {
+            $("#output").html(response);
+        },
+        error: function(response) {
+            $("#output").html(response.responseText);
+        }
+    });
+});
+    </script>
+</body>
+</html>

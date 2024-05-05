@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "runMain",
+            "type": "shell",
+            "command": "cd bridge-robot; poetry run main",
+            "problemMatcher": []
+        }
+    ]
+}

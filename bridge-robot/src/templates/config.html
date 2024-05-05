@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Config</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body class="text-center">
+    <div class="container py-5">
+        <h1 class="display-4">Config</h1>
+        <div class="form-inline justify-content-center">
+            <label for="north-direction" class="mr-3">North Direction</label>
+            <select id="north-direction" class="form-control">
+                <option>Left</option>
+                <option>Top</option>
+                <option>Bottom</option>
+                <option>Right</option>
+            </select>
+        </div>
+        <button id="save-button" class="btn btn-primary mt-3">Save</button>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
+    $(document).ready(function() {
+        var northDirection = localStorage.getItem('northDirection') || "top";
+        if (northDirection) {
+            $("#north-direction").val(toTitleCase(northDirection));
+        }
+    });
+
+    $("#save-button").on("click", function() {
+        var northDirection = $("#north-direction").val();
+        localStorage.setItem('northDirection', northDirection.toLowerCase());
+        window.location.href = '/';
+    });
+    </script>
+</body>
+</html>
