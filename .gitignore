@@ -9,3 +9,4 @@ bridge-robot/model/*
 */__pycache__
 */.idea
 runs/*
+bridge-robot-backend/src/secrets.json
