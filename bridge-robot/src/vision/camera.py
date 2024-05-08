@@ -42,7 +42,11 @@ class Camera:
         self.bidding_box_net = YOLO(config.BIDDING_BOX_NET_PATH)
         self.bidding = True
 
-    def detect(self, frame=None, bidding=None):
+    def detect(self, frame=None, bidding=None, width=None, height=None):
+        if not width:
+            width = self.width
+        if not height:
+            height = self.height
         if frame is None:
             frame = self.raw_read()
 
@@ -58,8 +62,9 @@ class Camera:
         
         for box in result.boxes:
             x, y, x2, y2 = [int(i.numpy()) for i in box.xyxy[0]]
-            
-            if not (20 <= (x2+x)//2 <= self.width-20 and 20 <= (y2+y)//2 <= self.height-20):
+            if not (20 <= (x2+x)//2 <= width-20 and 20 <= (y2+y)//2 <= height-20):
+                continue
+            if bidding and abs(x2-x) * abs(y2-y) < config.MIN_BID_AREA:
                 continue
             data.append((result.names[int(box.cls.item())], (x, y), (x2, y2)))
 
@@ -70,9 +75,17 @@ class Camera:
         if bidding is None:
             bidding = self.bidding
         frame = self.raw_read()
-        frame = frame[0:1080, 420:1500]
+        #frame = frame[0:1080, 420:1500]
+        height, width = frame.shape[:2]
+        scale = min(1080.0 / height, 1080.0 / width)
+        frame = cv2.resize(frame, None, fx=scale, fy=scale)
 
-        for label, corner1, corner2 in self.detect(frame, bidding=bidding):
+        # Pad the image to make it square
+        top = 0  # No padding at the top
+        bottom = 1080 - frame.shape[0]  # All padding at the bottom
+        left = right = (1080 - frame.shape[1]) // 2
+        frame = cv2.copyMakeBorder(frame, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+        for label, corner1, corner2 in self.detect(frame, bidding=bidding, width=1080, height=1080):
             cv2.rectangle(frame, corner1, corner2, (255, 0, 0), 2)
             cv2.putText(frame, label, (corner1[0], corner1[1]-20),
                          cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))

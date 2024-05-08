@@ -19,6 +19,7 @@ flask = "^3.0.3"
 flask-socketio = "^5.3.6"
 eventlet = "^0.36.1"
 pytesseract = "^0.3.10"
+shapely = "^2.0.4"
 
 
 [tool.poetry.scripts]

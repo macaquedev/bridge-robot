@@ -15,6 +15,9 @@
         #bottom-label,
         #left-label {
             color: black;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
         }
 
         .vulnerable {
@@ -25,26 +28,25 @@
             color: green !important;
         }
 
+        /*
         #left-label,
         #right-label {
             position: absolute;
-            top: calc(50% - 50px);
             width: 20px;
-            height: 100px;
-            margin-top: -50px;
+            margin-top: 50%;
             text-align: center;
             transform-origin: center center;
         }
-
-
-        #right-label {
-            left: 20px;
-            transform: rotate(-90deg);
-        }
+        */
 
         #left-label {
-            right: 20px;
+            transform: rotate(-90deg);
+            white-space: nowrap;
+        }
+
+        #right-label {
             transform: rotate(90deg);
+            white-space: nowrap;
         }
 
         .row {
@@ -65,27 +67,31 @@
             flex-grow: 1;
         }
 
-        .nowrap {
-            white-space: nowrap;
-        }
-
         .card-body {
             padding: 20px;
-            /* Add this line */
+        }
+
+        #left-label-container {
+            width: 50px;
+            text-align: center;
+        }
+
+        #right-label-container {
+            width: 50px;
+            text-align: center;
         }
 
         #output {
-            width: 100%;
+            width: calc(100%-100px);
+            max-height: 100%;
             object-fit: contain;
         }
 
         .grid-container {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 10px;
+            width: 100%;
+            height: 200px;
+            display: flex;
             align-items: center;
-            justify-items: center;
-            position: relative;
         }
     </style>
 </head>
@@ -101,9 +107,13 @@
                     <div class="card-body">
                         <div id="top-label" class="text-center mb-3"></div>
                         <div class="grid-container">
-                            <div id="left-label" class="text-right nowrap"></div>
+                            <div id="left-label-container">
+                                <div id="left-label"></div>
+                            </div>
                             <img id="output" src="" class="rounded">
-                            <div id="right-label" class="text-left nowrap"></div>
+                            <div id="right-label-container">
+                                <div id="right-label"></div>
+                            </div>
                         </div>
                         <div id="bottom-label" class="text-center mt-3"></div>
                     </div>
@@ -113,6 +123,7 @@
                 <div class="card">
                     <div class="card-body">
                         <auction-table></auction-table>
+                        <button id="undo-button" class="btn btn-primary">Undo</button>
                     </div>
                 </div>
             </div>
@@ -132,14 +143,13 @@
                 if (northDirection) {
                     var rotationMap = {
                         'top': 0,
-                        'right': 1,
+                        'right': 3,
                         'bottom': 2,
-                        'left': 3
+                        'left': 1
                     };
                     var rotation = rotationMap[northDirection];
                     directions = directions.slice(rotation).concat(directions.slice(0, rotation));
                 }
-
                 ['top', 'right', 'bottom', 'left'].forEach(function (direction, i) {
                     labels[direction + '-label'] = directions[i];
                 });
@@ -164,21 +174,74 @@
             }
         });
         socket.on('connect', function () {
-            console.log('Connected to server');
+            var northDirection = localStorage.getItem('northDirection');
+            var dealer = '{{ dealer }}';
+            var vulnerability = '{{ vulnerability }}';
+
+            socket.emit('setup', { northDirection: northDirection, dealer: dealer, vulnerability: vulnerability });
         });
-    </script>
-    <script type="module">
+        socket.on('event', function (data) {
+            var auction = document.querySelector('auction-table');
+            console.log(data);
+            if (data["type"] == "new_bid") {
+                auction.addBid(data["card"]);
+            } else if (data["type"] == "error") {
+                var errorElement = document.createElement('div');
+                errorElement.id = 'error-message'; // Add an id to the error element
+                errorElement.textContent = `Illegal bid: ${data["player"]} bid ${data["card"]}`;
+                errorElement.style.color = 'red'; // Change the color to red to indicate an error
+                auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+            } else if (data["type"] == "delete_error") {
+                var errorElement = document.getElementById('error-message');
+                if (errorElement) {
+                    errorElement.parentNode.removeChild(errorElement);
+                }
+            }
+        });
         document.addEventListener('DOMContentLoaded', (event) => {
             var dealer = '{{ dealer }}';
             var vulnerability = '{{ vulnerability }}';
             var auction = document.querySelector('auction-table');
             console.log(dealer);
             auction.setDealer(dealer);
-            auction.addBid('1NT');
-            auction.addBid('Pass');
-            auction.addBid('2C');
-            auction.addBid('Pass');
-            auction.addBid('2D');
+        });
+        document.getElementById('undo-button').addEventListener('click', function () {
+            var auction = document.querySelector('auction-table');
+
+            // Create Confirm and Cancel buttons
+            var confirmButton = document.createElement('button');
+            var undoButton = this;
+            undoButton.disabled = true;
+            confirmButton.innerText = 'Confirm';
+            confirmButton.id = 'confirm-button';
+            confirmButton.className = 'btn btn-success'; // Bootstrap success button
+
+            var cancelButton = document.createElement('button');
+            cancelButton.innerText = 'Cancel';
+            cancelButton.id = 'cancel-button';
+            cancelButton.className = 'btn btn-danger'; // Bootstrap danger button
+            // Append buttons to the body (or any other container)
+            document.body.appendChild(confirmButton);
+            document.body.appendChild(cancelButton);
+
+            // Add event listeners to the Confirm and Cancel buttons
+            confirmButton.addEventListener('click', function () {
+                // Perform confirm action here
+                // Remove the buttons after confirming
+                confirmButton.remove();
+                cancelButton.remove();
+                auction.undo();
+                socket.emit("undo");
+                undoButton.disabled = false;
+            });
+
+            cancelButton.addEventListener('click', function () {
+                // Perform cancel action here
+                // Remove the buttons after cancelling
+                confirmButton.remove();
+                cancelButton.remove();
+                undoButton.disabled = false;
+            });
         });
     </script>
 </body>

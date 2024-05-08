@@ -51,6 +51,25 @@ class AuctionTable extends HTMLElement {
         cell.textContent = bid;
         this.currentTurn++;
     }
+
+    undo() {
+        var table = this.querySelector('#auction-table');
+        // If there are no rows, there's nothing to undo
+        if (table.rows.length === 0) {
+            return;
+        }
+        // Get the last row
+        var row = table.rows[table.rows.length - 1];
+        // If the row has more than one cell, remove the last cell
+        if (row.cells.length > 1) {
+            row.deleteCell(row.cells.length - 1);
+        } else {
+            // Otherwise, remove the entire row
+            table.deleteRow(table.rows.length - 1);
+        }
+        // Decrement the current turn
+        this.currentTurn--;
+    }
 }
 
 customElements.define('auction-table', AuctionTable);
