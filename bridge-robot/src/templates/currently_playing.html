@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script src="/static/scripts/auction.js"></script>
+    <script src="/static/scripts/trickCounter.js"></script>
     <style>
         #top-label,
         #right-label,
@@ -122,6 +123,7 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
+                        <trick-counter style="display: none;"></trick-counter>
                         <auction-table></auction-table>
                         <button id="undo-button" class="btn btn-primary">Undo</button>
                     </div>
@@ -196,6 +198,8 @@
                 if (errorElement) {
                     errorElement.parentNode.removeChild(errorElement);
                 }
+            } else if (data["type"] == "end_auction") {
+                document.querySelector('trick-counter').style.display = 'block';
             }
         });
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -221,8 +225,8 @@
             cancelButton.id = 'cancel-button';
             cancelButton.className = 'btn btn-danger'; // Bootstrap danger button
             // Append buttons to the body (or any other container)
-            document.body.appendChild(confirmButton);
-            document.body.appendChild(cancelButton);
+            undoButton.parentNode.appendChild(confirmButton);
+            undoButton.parentNode.appendChild(cancelButton);
 
             // Add event listeners to the Confirm and Cancel buttons
             confirmButton.addEventListener('click', function () {
@@ -230,9 +234,8 @@
                 // Remove the buttons after confirming
                 confirmButton.remove();
                 cancelButton.remove();
-                auction.undo();
-                socket.emit("undo");
                 undoButton.disabled = false;
+                if (auction.undo()) socket.emit("undo");
             });
 
             cancelButton.addEventListener('click', function () {

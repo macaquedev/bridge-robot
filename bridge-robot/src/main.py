@@ -6,9 +6,10 @@ from src.vision.maincam import MainCam
 from src.communication.arduino import Arduino
 import config
 import base64
-from multiprocessing import Process, Queue, Manager
-from queue import Empty
+from multiprocessing import Process, Queue, Manager, Pool
+from queue import Empty, Full
 from collections import defaultdict
+import random
 
 import numpy as np
 
@@ -32,7 +33,7 @@ def remove_white_borders(img):
 
 def bid_value(card):
     return [
-        '1C', '1D', '1H', '1S', '1NT',
+        None, '1C', '1D', '1H', '1S', '1NT',
         '2C', '2D', '2H', '2S', '2NT',
         '3C', '3D', '3H', '3S', '3NT',
         '4C', '4D', '4H', '4S', '4NT',
@@ -52,37 +53,72 @@ def arduino_process(queue):
             arduino.send_data(command)
 
 
-def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirection, vulnerability):  
+def camera_process(input_queue, output_queue):
+    curr_mode = None
     with MainCam(config.MAINCAM_INDEX, config.MAINCAM_WIDTH, config.MAINCAM_HEIGHT) as cap:
+        while True:
+            try:
+                event = input_queue.get(timeout=0)
+                if event["type"] == "set_mode":
+                    curr_mode = event["value"]
+                else:
+                    print(event)
+            except Empty:
+                pass
+            frame = cap.raw_read()
+            match curr_mode:
+                case "auction":
+                    image = cap.preprocess_image(frame)
+                    det = cap.detect(image, bidding=True, preprocess=False)
+                    try:
+                        output_queue.put((image, det))
+                    except Full:
+                        output_queue.get()
+                        output_queue.put(image, det)
+                case "cardplay":
+                    d = cap.detect_cards(frame)
+                    try:
+                        output_queue.put(d)
+                    except Full:
+                        output_queue.get()
+                        output_queue.put(d)
+                case _:
+                    d = cap.preprocess_image(frame)
+                    try:
+                        output_queue.put(d, None)
+                    except Full:
+                        output_queue.get()
+                        output_queue.put(d)
 
-        frame = cv2.resize(cap.raw_read(), (1280, 720))
+def auction_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, frontend_queue, dealer, northDirection, vulnerability, result_queue):  
+    try:
+        highest_bids = [(None, None)]
+        doubled = False
+        redoubled = False
+        num_passes = 0
         in_frame = defaultdict(list)
         to_be_added = defaultdict(list)
         to_be_removed = defaultdict(list)
         directions = ["North", "East", "South", "West"]
         directions = directions[["top", "left", "bottom", "right"].index(northDirection):] + directions[:["top", "left", "bottom", "right"].index(northDirection)]
-        print(directions)
         dealer = directions.index(dealer)
-        print(dealer)
         auction = [[], [], [], []]
         current_turn = dealer
         current_error = None
         while True:
-            frame = cap.raw_read()
-
-            #frame = frame[0:1080, 420:1500]
-            height, width = frame.shape[:2]
-            scale = min(1280.0 / height, 1280.0 / width)
-            frame = cv2.resize(frame, None, fx=scale, fy=scale)
-
-            # Pad the image to make it square
-            top = 0  # No padding at the top
-            bottom = 1280 - frame.shape[0]  # All padding at the bottom
-            left = right = (1280 - frame.shape[1]) // 2
-            frame = cv2.copyMakeBorder(frame, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-        
-            frame_center = (frame.shape[1] // 2, frame.shape[0] // 2)  # Center of the frame
-            det = cap.detect(frame, bidding=True)
+            try:
+                incoming_frame_queue.get(timeout=0)
+            except Empty:
+                break
+        while True:
+            try:
+                frame, det = incoming_frame_queue.get(timeout=0)
+                if det is None:
+                    continue
+            except (Empty, ValueError):
+                continue
+            print("auction")
+            #print(directions[current_turn])
             for card, top_left, bottom_right in det:
                 for i in range(len(in_frame[card])):
                     box = in_frame[card][i][0]
@@ -96,7 +132,6 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                             break
                     else:
                         to_be_added[card] = [[0, top_left, bottom_right]]
-
                 if card not in in_frame:
                     if card in to_be_removed:
                         for i in range(len(to_be_removed[card])):
@@ -104,8 +139,6 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                             if (top_left[0] - box[0]) ** 2 + (top_left[1] - box[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                                 to_be_removed[card].pop(i)
                                 break
-
-
             for card in in_frame:
                 to_remove = set()
                 for i in range(len(in_frame[card])):
@@ -116,7 +149,6 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                         if det_card == card and (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                             to_remove.remove(i)
                             break
-
                 for i in to_remove:
                     if card not in to_be_removed:
                         to_be_removed[card] = []
@@ -126,8 +158,6 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                         
                     else:
                         to_be_removed[card].append([0, in_frame[card][i][0], in_frame[card][i][1]])
-
-
             for card in to_be_added:
                 for i in range(len(to_be_added[card])):
                     to_be_added[card][i][0] += 1
@@ -154,7 +184,6 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                         #event_queue.put({'type': 'add_bid', 'card': card, 'player': directions[player]})
                         break
                     
-
             for card in to_be_removed:
                 to_remove = set()
                 for i in range(len(to_be_removed[card])):
@@ -162,17 +191,13 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                     if to_be_removed[card][i][0] >= config.REMOVE_THRESHOLD:
                         to_remove.add(i)
                         break
-
                 for i in to_remove:
                     top_left = to_be_removed[card][i][1]
                     for j in range(len(in_frame[card])):
                         if (top_left[0] - in_frame[card][j][0][0]) ** 2 + (top_left[1] - in_frame[card][j][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                             in_frame[card].pop(j)
                             break
-
                     to_be_removed[card].pop(i)
-
-
             for card in in_frame:
                 for top_left, bottom_right, player in in_frame[card]:
                     cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)
@@ -180,12 +205,10 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                     #cv2.circle(frame, center, 5, (0, 255, 0), -1)
                     if player is None:
                         current_error = (card, top_left, bottom_right)
-            
-            # two cases, either a bid was made or not. 
 
+            # two cases, either a bid was made or not. 
             # if a bid was made, we need to update the current turn and the auction list
             # if no bid was made, we need to check if the current player has a bid in the auction list
-
             # auction["player"] is a list of cards sorted by coordinate
             if current_error:
                 card, top_left, bottom_right = current_error
@@ -196,13 +219,11 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                 else:
                     current_error = None
                     event_queue.put({'type': 'delete_error'})
-
             else:
                 by_player = [[], [], [], []]
                 for card in in_frame:
                     for top_left, bottom_right, player in in_frame[card]:
                         by_player[player].append((card, top_left, bottom_right))
-
                 for i in range(4):
                     by_player[i].sort(key=config.SORTFUNCS[i])
                 played = False
@@ -211,58 +232,63 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                         continue
                     
                     card, top_left, bottom_right = by_player[i][-1]
-                    if not auction[i]:
-                        if i != current_turn:
+
+                    for j in range(len(auction[i])):
+                        other_card, other_top_left, _ = auction[i][j]
+                        if ((top_left[0] - other_top_left[0]) ** 2 + (top_left[1] - other_top_left[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED
+                            ) or (other_card == card and card not in ["Pass", "Double", "Redouble"]):
+                            if card == other_card:
+                                auction[i][j] = (other_card, top_left, bottom_right)
+                            break
+                    else:
+                        if i == current_turn:
+                            highest_bid = highest_bids[-1]
+                            if (card == "Double" and ((not highest_bid[0]) or (highest_bid[1] % 2 == i % 2) or doubled or redoubled)
+                                ) or (card == "Redouble" and ((not highest_bid[0]) or (highest_bid[1] % 2 != i % 2) or (not doubled) or redoubled)
+                                ) or (card not in ["Pass", "Double", "Redouble"] and bid_value(highest_bid[0]) >= bid_value(card)):
+                                current_error = (card, top_left, bottom_right)
+                                event_queue.put({'type': 'error', 'card': card, 'player': directions[i]})
+
+                            else: 
+                                auction[i].append((card, top_left, bottom_right))
+                                if card not in ["Pass", "Double", "Redouble"]:
+                                    highest_bids.append((card, i))
+                                event_queue.put({'type': 'new_bid', 'card': card, 'player': directions[i]})
+                                if card == "Pass":
+                                    num_passes += 1
+                                    if num_passes + int(bool(highest_bid[0])) == 4:
+                                        event_queue.put({'type': 'end_auction'})
+                                        print("auction ended")
+                                        result_queue.put(auction[:])
+                                        print("put auction into queue")
+                                        
+                                else:
+                                    num_passes = 0
+                                    if card == "Double":
+                                        doubled = True
+                                    elif card == "Redouble":
+                                        doubled = False
+                                        redoubled = True
+                                    else:
+                                        doubled = False
+                                        redoubled = False
+
+                                played = True
+                        else:
                             current_error = (card, top_left, bottom_right)
                             event_queue.put({'type': 'error', 'card': card, 'player': directions[i]})
-                        else:
-                            auction[i].append((card, top_left, bottom_right))
-                            event_queue.put({'type': 'new_bid', 'card': card, 'player': directions[i]})
-                            played = True
-
-                    else:
-                        prev_card, prev_top_left, prev_bottom_right = auction[i][-1]
-                         
-                        if card not in ["Pass", "Double", "Redouble"]:
-                            if prev_card == card:
-                                continue  
-                            flag = True
-                            for c, tl, br in auction[i]:
-                                if card == c or abs(tl[0]-top_left[0])**2 + abs(tl[1]-top_left[1])**2 < config.COALESCE_DISTANCE_SQUARED:
-                                    flag = False
-                                    break
-                            if not flag:
-                                continue
-#TODO: when undo happens, it grabs detection from the wrong place - very peculiar bug....
-                        #TODO WORK HERE because pass cards just keep working and working and working basically.
-                        if card in ["Pass", "Double", "Redouble"] or (top_left[0] - prev_top_left[0]) ** 2 + (top_left[1] - prev_top_left[1]) ** 2 > config.COALESCE_DISTANCE_SQUARED:
-                            if i != current_turn:
-                                comp_list = auction[i][:]
-                                comp_list.append((card, top_left, bottom_right))
-                                comp_list.sort(key=config.SORTFUNCS[i])
-                                if card != comp_list[-1][0] or (top_left[0] - comp_list[-1][1][0]) ** 2 + (top_left[1] - comp_list[-1][1][1]) ** 2 > config.COALESCE_DISTANCE_SQUARED:
-                                    current_error = (card, top_left, bottom_right)
-                                    event_queue.put({'type': 'error', 'card': card, 'player': directions[i]})
-                            else:
-                                if (top_left[0] - prev_top_left[0]) ** 2 + (top_left[1] - prev_top_left[1]) ** 2 > config.COALESCE_DISTANCE_SQUARED:
-                                    auction[i].append((card, top_left, bottom_right))
-                                    event_queue.put({'type': 'new_bid', 'card': card, 'player': directions[i]})
-                                    played = True
-                                else:
-                                    auction[i][-1] = (auction[i][-1][0], top_left, bottom_right)
-
-                                    
-                        else:   # close together
-                            auction[i][-1] = (auction[i][-1][0], top_left, bottom_right)
+            cv2.polylines(frame, [np.array(config.TOP_POLYGON.exterior.coords).astype(int)], isClosed=True, color=(0, 0, 255), thickness=2)
+            cv2.polylines(frame, [np.array(config.LEFT_POLYGON.exterior.coords).astype(int)], isClosed=True, color=(0, 255, 255), thickness=2)
+            cv2.polylines(frame, [np.array(config.BOTTOM_POLYGON.exterior.coords).astype(int)], isClosed=True, color=(0, 255, 0), thickness=2)
+            cv2.polylines(frame, [np.array(config.RIGHT_POLYGON.exterior.coords).astype(int)], isClosed=True, color=(255, 255, 0), thickness=2)
 
             if played:
                 current_turn = (current_turn + 1) % 4
-                print(directions[current_turn])
             
             ret, buffer = cv2.imencode('.jpg', cv2.resize(remove_white_borders(frame), (320, 180)))
             if not ret:
                 continue
-            frame_queue.put(base64.b64encode(buffer).decode('utf-8'))
+            outgoing_frame_queue.put(base64.b64encode(buffer).decode('utf-8'))
             try:
                 event = frontend_queue.get(timeout=0)
                 if event == 'undo':
@@ -273,41 +299,276 @@ def auction_mode(frame_queue, event_queue, frontend_queue, dealer, northDirectio
                             if (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                                 in_frame[card].pop(i)
                                 break
-
                         for i in range(len(to_be_removed[card])):
                             if (top_left[0] - to_be_removed[card][i][1][0]) ** 2 + (top_left[1] - to_be_removed[card][i][1][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                                 to_be_removed[card].pop(i)
                                 break
-                    
-                    error = None
+                        if highest_bids[-1] == (card, current_turn):
+                            highest_bids.pop()
+                        if card == "Pass":
+                            num_passes -= 1
+                        elif card == "Double":
+                            doubled = False
+                        elif card == "Redouble":
+                            redoubled = False
+                            doubled = True
+                    current_error = None
                     event_queue.put({"type": "delete_error"})
-
-                        #if error and error[0] 
-
-
             except Empty:
                 pass
-            # Update previous frame
-            #print(to_be_added, in_frame, to_be_removed)
-            #img = np.zeros((500, 500, 3), dtype=np.uint8)
-            #y = 20
-            #for card_label in in_frame:
-            #    for top_left, bottom_right, player in in_frame[card_label]:
-            #        cv2.putText(img, f"{player} played {card_label}", (20, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            #        y += 20
-            #cv2.imshow("In Frame", img)
-            ## Break loop if 'q' is pressed
-            #if cv2.waitKey(1) & 0xFF == ord('q'):
-            #    break
-            print(directions[current_turn], current_error)
-            
+    except Exception as e: 
+        print("Error in auction_mode: ", e)
+        raise
+
+
+def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, frontend_queue, dealer, northDirection, vulnerability, result_queue):  
+    print("entered cardplay")
+    highest_bids = [(None, None)]
+    doubled = False
+    redoubled = False
+    num_passes = 0
+    in_frame = defaultdict(list)
+    to_be_added = defaultdict(list)
+    to_be_removed = defaultdict(list)
+    directions = ["North", "East", "South", "West"]
+    directions = directions[["top", "left", "bottom", "right"].index(northDirection):] + directions[:["top", "left", "bottom", "right"].index(northDirection)]
+    dealer = directions.index(dealer)
+    auction = [[], [], [], []]
+    current_turn = dealer
+    current_error = None
+    while True:
+        try:
+            incoming_frame_queue.get(timeout=0)
+        except Empty:
+            break
+    while True:
+        try:
+            thresh, detector_frame, det = incoming_frame_queue.get(timeout=0)
+            if det is None:
+                continue
+        except Empty:
+            continue
+        print("cardplay")
+        print(det)
+        for card, polygon in det:
+            M = cv2.moments(polygon)
+            if M["m00"] != 0:
+                cx = int(M["m10"] / M["m00"])
+                cy = int(M["m01"] / M["m00"])
+            else:
+                continue
+
+            top_left = (cx, cy)
+            for i in range(len(in_frame[card])):
+                box = in_frame[card][i][0]
+                if (top_left[0] - box[0]) ** 2 + (top_left[1] - box[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                    in_frame[card][i] = [top_left, in_frame[card][i][1]]
+                    break
+            else:
+                for i in range(len(to_be_added[card])):
+                    box = to_be_added[card][i][1]
+                    if (top_left[0] - box[0]) ** 2 + (top_left[1] - box[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                        break
+                else:
+                    to_be_added[card] = [[0, top_left]]
+            if card not in in_frame:
+                if card in to_be_removed:
+                    for i in range(len(to_be_removed[card])):
+                        box = to_be_removed[card][i][1]
+                        if (top_left[0] - box[0]) ** 2 + (top_left[1] - box[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                            to_be_removed[card].pop(i)
+                            break
+        for card in in_frame:
+            to_remove = set()
+            for i in range(len(in_frame[card])):
+                if i in to_remove:
+                    continue
+                to_remove.add(i)
+                for det_card, top_left, top_right in det:
+                    if det_card == card and (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                        to_remove.remove(i)
+                        break
+            for i in to_remove:
+                if card not in to_be_removed:
+                    to_be_removed[card] = []
+                for j in range(len(to_be_removed[card])):
+                    if (in_frame[card][i][0][0] - to_be_removed[card][j][1][0]) ** 2 + (in_frame[card][i][0][1] - to_be_removed[card][j][1][1]) < config.COALESCE_DISTANCE_SQUARED:
+                        break    
+                    
+                else:
+                    to_be_removed[card].append([0, in_frame[card][i][0]])
+        for card in to_be_added:
+            for i in range(len(to_be_added[card])):
+                to_be_added[card][i][0] += 1
+                if to_be_added[card][i][0] == config.ADD_THRESHOLD:
+                    if card not in in_frame:
+                        in_frame[card] = []
+                    in_frame[card].append([to_be_added[card][i][1], None])
+                    box = in_frame[card][-1]
+                    x_pos = box[0][0] + (box[1][0] - box[0][0]) // 2
+                    y_pos = box[0][1] + (box[1][1] - box[0][1]) // 2
+                    p = Point(x_pos, y_pos)
+                    if config.TOP_POLYGON.contains(p):
+                        player = 0
+                    elif config.RIGHT_POLYGON.contains(p):
+                        player = 1
+                    elif config.BOTTOM_POLYGON.contains(p):
+                        player = 2
+                    elif config.LEFT_POLYGON.contains(p):
+                        player = 3
+                    else:
+                        player = None
+                    to_be_added[card].pop(i)
+                    in_frame[card][-1][2] = player 
+                    #event_queue.put({'type': 'add_bid', 'card': card, 'player': directions[player]})
+                    break
+                
+        for card in to_be_removed:
+            to_remove = set()
+            for i in range(len(to_be_removed[card])):
+                to_be_removed[card][i][0] += 1
+                if to_be_removed[card][i][0] >= config.REMOVE_THRESHOLD:
+                    to_remove.add(i)
+                    break
+            for i in to_remove:
+                top_left = to_be_removed[card][i][1]
+                for j in range(len(in_frame[card])):
+                    if (top_left[0] - in_frame[card][j][0][0]) ** 2 + (top_left[1] - in_frame[card][j][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                        in_frame[card].pop(j)
+                        break
+                to_be_removed[card].pop(i)
+        for card in in_frame:
+            for top_left, bottom_right, player in in_frame[card]:
+                #cv2.circle(frame, center, 5, (0, 255, 0), -1)
+                if player is None:
+                    current_error = (card, top_left, bottom_right)
+        
+        # two cases, either a bid was made or not. 
+        # if a bid was made, we need to update the current turn and the auction list
+        # if no bid was made, we need to check if the current player has a bid in the auction list
+        # auction["player"] is a list of cards sorted by coordinate
+        if current_error:
+            card, top_left, bottom_right = current_error
+            for i in range(len(in_frame[card])):
+                if (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                    current_error = (card, in_frame[card][i][0], in_frame[card][i][1])
+                    break
+            else:
+                current_error = None
+                event_queue.put({'type': 'delete_error'})
+        else:
+            by_player = [[], [], [], []]
+            for card in in_frame:
+                for top_left, bottom_right, player in in_frame[card]:
+                    by_player[player].append((card, top_left, bottom_right))
+            for i in range(4):
+                by_player[i].sort(key=config.SORTFUNCS[i])
+            played = False
+            for i in range(4):
+                if not by_player[i]:
+                    continue
+                
+                card, top_left, bottom_right = by_player[i][-1]
+        
+                for j in range(len(auction[i])):
+                    other_card, other_top_left, _ = auction[i][j]
+                    if ((top_left[0] - other_top_left[0]) ** 2 + (top_left[1] - other_top_left[1]) ** 2 < config.COALESCE_DISTANCE_SQUARED
+                        ) or (other_card == card and card not in ["Pass", "Double", "Redouble"]):
+                        if card == other_card:
+                            auction[i][j] = (other_card, top_left, bottom_right)
+                        break
+                else:
+                    if i == current_turn:
+                        highest_bid = highest_bids[-1]
+                        if (card == "Double" and ((not highest_bid[0]) or (highest_bid[1] % 2 == i % 2) or doubled or redoubled)
+                            ) or (card == "Redouble" and ((not highest_bid[0]) or (highest_bid[1] % 2 != i % 2) or (not doubled) or redoubled)
+                            ) or (card not in ["Pass", "Double", "Redouble"] and bid_value(highest_bid[0]) >= bid_value(card)):
+                            current_error = (card, top_left, bottom_right)
+                            event_queue.put({'type': 'error', 'card': card, 'player': directions[i]})
+                            
+                        else: 
+                            auction[i].append((card, top_left, bottom_right))
+                            if card not in ["Pass", "Double", "Redouble"]:
+                                highest_bids.append((card, i))
+                            event_queue.put({'type': 'new_bid', 'card': card, 'player': directions[i]})
+                            if card == "Pass":
+                                num_passes += 1
+                                if num_passes + int(bool(highest_bid[0])) == 4:
+                                    event_queue.put({'type': 'end_auction'})
+                                    return
+                            else:
+                                num_passes = 0
+                                if card == "Double":
+                                    doubled = True
+                                elif card == "Redouble":
+                                    doubled = False
+                                    redoubled = True
+                                else:
+                                    doubled = False
+                                    redoubled = False
+                                    
+                            played = True
+                    else:
+                        current_error = (card, top_left, bottom_right)
+                        event_queue.put({'type': 'error', 'card': card, 'player': directions[i]})
+
+        if played:
+            current_turn = (current_turn + 1) % 4
+        
+        ret, buffer = cv2.imencode('.jpg', cv2.resize(remove_white_borders(thresh), (320, 180)))
+        if not ret:
+            continue
+        outgoing_frame_queue.put(base64.b64encode(buffer).decode('utf-8'))
+        try:
+            event = frontend_queue.get(timeout=0)
+            if event == 'undo':
+                current_turn = (current_turn + 3) % 4
+                if auction[current_turn]:
+                    card, top_left, bottom_right = auction[current_turn].pop()
+                    for i in range(len(in_frame[card])):
+                        if (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                            in_frame[card].pop(i)
+                            break
+                    for i in range(len(to_be_removed[card])):
+                        if (top_left[0] - to_be_removed[card][i][1][0]) ** 2 + (top_left[1] - to_be_removed[card][i][1][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                            to_be_removed[card].pop(i)
+                            break
+                    if highest_bids[-1] == (card, current_turn):
+                        highest_bids.pop()
+                    if card == "Pass":
+                        num_passes -= 1
+                    elif card == "Double":
+                        doubled = False
+                    elif card == "Redouble":
+                        redoubled = False
+                        doubled = True
+                current_error = None
+                event_queue.put({"type": "delete_error"})
+        except Empty:
+            pass
+        # Update previous frame
+        #print(to_be_added, in_frame, to_be_removed)
+        #img = np.zeros((500, 500, 3), dtype=np.uint8)
+        #y = 20
+        #for card_label in in_frame:
+        #    for top_left, bottom_right, player in in_frame[card_label]:
+        #        cv2.putText(img, f"{player} played {card_label}", (20, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        #        y += 20
+        #cv2.imshow("In Frame", img)
+        ## Break loop if 'q' is pressed
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+        #    break
 
 
 def create_app():
     manager = Manager()
     arduino_queue = manager.Queue()
+    camera_output_queue = manager.Queue(maxsize=10)
+    camera_input_queue = manager.Queue()
     p_arduino = Process(target=arduino_process, args=(arduino_queue,))
+    p_camera = Process(target=camera_process, args=(camera_input_queue, camera_output_queue))
     p_arduino.start()
+    p_camera.start()
     app = Flask(__name__)
     socketio = SocketIO(app, async_mode="threading", cors_allowed_origins='*')
     
@@ -334,20 +595,53 @@ def create_app():
             dealer = data.get('dealer')
             vulnerability = data.get('vulnerability')
 
-            def send_frames():
-                frame_queue = Queue()
-                event_queue = Queue()
-                p = Process(target=auction_mode, args=(frame_queue,event_queue, self.frontend_queue, dealer, northDirection, vulnerability))
-                p.start()
-                while True:
-                    frame = frame_queue.get()
-                    self.emit('image', frame)
-                    try:
-                        event = event_queue.get(timeout=0)
-                        self.emit('event', event)
-                    except Empty:
-                        pass
-            socketio.start_background_task(send_frames)
+            def send_frames(output_queue):
+                with Manager() as manager:
+                    frame_queue = manager.Queue()
+                    event_queue = manager.Queue()
+                    result_queue = manager.Queue()
+                    camera_input_queue.put({'type': 'set_mode', 'value': 'auction'})
+                    auction_process = Process(target=auction_mode, args=(camera_output_queue, frame_queue, event_queue, self.frontend_queue, dealer, northDirection, vulnerability, result_queue))
+                    auction_process.start()  # Start the process
+                    cardplay_process = None
+                    auction_result = None
+                    cardplay_result = None
+                    while True:
+                        frame = frame_queue.get()
+                        self.emit('image', frame)
+                        try:
+                            event = event_queue.get(timeout=0)
+                            self.emit('event', event)
+                        except Empty:
+                            pass
+
+                        try:
+                            result = result_queue.get(timeout=0)
+                            if auction_process is not None:
+                                auction_result = result
+                                auction_process.terminate()
+                                auction_process.join()
+                                auction_process = None
+                                camera_input_queue.put({'type': 'set_mode', 'value': 'cardplay'})
+                                cardplay_process = Process(target=cardplay_mode, args=(camera_output_queue, frame_queue, event_queue, self.frontend_queue, dealer, northDirection, vulnerability, result_queue))
+                                cardplay_process.start()
+                            else:
+                                cardplay_result = result
+                                cardplay_process.join()
+                                cardplay_process = None
+                                break
+                        except Empty:
+                            print(f"still doing stuff {random.randint(1, 10000)}")
+                            pass
+                        except Exception as e:
+                            print(e)
+                            raise
+                    
+                    output_queue.put(auction_result)
+                    output_queue.put(cardplay_result)
+
+            output_queue = manager.Queue()
+            socketio.start_background_task(send_frames, output_queue)
 
     socketio.on_namespace(MyNamespace('/'))
     @app.route('/watch')

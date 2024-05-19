@@ -55,8 +55,8 @@ class AuctionTable extends HTMLElement {
     undo() {
         var table = this.querySelector('#auction-table');
         // If there are no rows, there's nothing to undo
-        if (table.rows.length === 0) {
-            return;
+        if (table.rows.length === 1) {
+            return false;
         }
         // Get the last row
         var row = table.rows[table.rows.length - 1];
@@ -69,6 +69,7 @@ class AuctionTable extends HTMLElement {
         }
         // Decrement the current turn
         this.currentTurn--;
+        return true;
     }
 }
 

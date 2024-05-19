@@ -14,7 +14,7 @@ class ArmCam(Camera):
     
 
     def detect(self, frame=None):
-        data = super().detect(frame, bidding=False)
+        data = super().detect(frame, bidding=False, preprocess=False)
         return [card for card in data if card[1][1]+card[2][1] < self.height]
     
 

@@ -42,13 +42,18 @@ class Camera:
         self.bidding_box_net = YOLO(config.BIDDING_BOX_NET_PATH)
         self.bidding = True
 
-    def detect(self, frame=None, bidding=None, width=None, height=None):
+    def detect(self, frame=None, bidding=None, width=None, height=None, preprocess=True):
         if not width:
             width = self.width
         if not height:
             height = self.height
         if frame is None:
             frame = self.raw_read()
+
+        if preprocess:
+            frame = self.preprocess_image(frame)
+            width = config.DETECT_FRAME_SIZE
+            height = config.DETECT_FRAME_SIZE
 
         if bidding is None:
             bidding = self.bidding
@@ -71,24 +76,33 @@ class Camera:
         return data
     
 
-    def draw_boxes(self, bidding=None):
-        if bidding is None:
-            bidding = self.bidding
-        frame = self.raw_read()
-        #frame = frame[0:1080, 420:1500]
+    def preprocess_image(self, frame=None):
+        if frame is None:
+            frame = self.raw_read()
+
         height, width = frame.shape[:2]
-        scale = min(1080.0 / height, 1080.0 / width)
+        scale = min(config.DETECT_FRAME_SIZE / height, config.DETECT_FRAME_SIZE / width)
         frame = cv2.resize(frame, None, fx=scale, fy=scale)
 
         # Pad the image to make it square
         top = 0  # No padding at the top
-        bottom = 1080 - frame.shape[0]  # All padding at the bottom
-        left = right = (1080 - frame.shape[1]) // 2
-        frame = cv2.copyMakeBorder(frame, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-        for label, corner1, corner2 in self.detect(frame, bidding=bidding, width=1080, height=1080):
+        bottom = config.DETECT_FRAME_SIZE - frame.shape[0]  # All padding at the bottom
+        left = right = (config.DETECT_FRAME_SIZE - frame.shape[1]) // 2
+        return cv2.copyMakeBorder(frame, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+        
+
+    def draw_boxes(self, frame=None, bidding=None):
+        if bidding is None:
+            bidding = self.bidding
+        if frame is None:
+            frame = self.raw_read()
+        
+        frame = self.preprocess_image(frame)
+
+        for label, corner1, corner2 in self.detect(frame, bidding=bidding, width=config.DETECT_FRAME_SIZE, height=config.DETECT_FRAME_SIZE):
             cv2.rectangle(frame, corner1, corner2, (255, 0, 0), 2)
-            cv2.putText(frame, label, (corner1[0], corner1[1]-20),
-                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
+            cv2.putText(frame, label, (corner1[0], corner2[1]+30),
+                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
         return frame   
     
 

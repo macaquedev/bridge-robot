@@ -3,10 +3,9 @@ import cv2
 import config
 import numpy as np
 
-CARD_AREA = 3000
-BKG_THRESH = 110
+CARD_AREA = 2500
+BKG_THRESH = 100
 COALESCE_DISTANCE_SQUARED = 900
-UPSIDE_DOWN_THRESH = 180
 
 class MainCam(Camera):
     def __init__(self, camera_index, width, height):
@@ -31,19 +30,17 @@ class MainCam(Camera):
         mask = cv2.bitwise_not(mask)
         return mask
 
-    def old_algo(self):
-        frame = self.raw_read()
-        disp = cv2.resize(frame, (800, 450))
-        cv2.imshow("ORIG", disp)
-        cv2.waitKey(1)
+    def detect_cards(self, frame=None):
+        if frame is None:
+            frame = self.raw_read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         img_w, img_h = np.shape(frame)[:2]
         bkg_level = np.median(gray[0:img_w, 0:img_h])
         thresh_level = bkg_level + BKG_THRESH
         _, thresh = cv2.threshold(gray, thresh_level, 255, cv2.THRESH_BINARY)
-        gray_thresh = cv2.bitwise_and(thresh, self.mask)
+        gray_thresh = cv2.bitwise_and(thresh, thresh)#, self.mask)
         thresh = cv2.cvtColor(gray_thresh, cv2.COLOR_GRAY2BGR)
-        cnts, hier = cv2.findContours(gray_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        cnts, _ = cv2.findContours(gray_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)      
         filtered_cnts = []
         centroids = []
@@ -59,11 +56,15 @@ class MainCam(Camera):
                 centroids.append(centroid)
         cnts = filtered_cnts
         num_contours = 0
+        to_detect = []
+        
+        centroids = [cv2.moments(cnt) for cnt in cnts if cv2.moments(cnt)["m00"] != 0]
+        y_coords = [int(M["m01"] / M["m00"]) for M in centroids]
+        pairs = list(zip(cnts, y_coords))
+        sorted_pairs = sorted(pairs, key=lambda x: x[1])
+        cnts = [pair[0] for pair in sorted_pairs]
         for i in range(len(cnts)):
             if cv2.contourArea(cnts[i]) < CARD_AREA:
-                cnts = cnts[:i]
-                break
-            if hier[0][i][3] != -1:  # this is a child
                 continue
             num_contours += 1
             M = cv2.moments(cnts[i])
@@ -92,35 +93,56 @@ class MainCam(Camera):
                 [width - 1, height - 1],
                 [0, height - 1]], dtype='float32')
             M = cv2.getPerspectiveTransform(box.astype('float32'), dst_pts)
-            warped = cv2.warpPerspective(thresh, M, (width, height))
+            warped = cv2.warpPerspective(frame, M, (width, height))
             if rotate:
                 warped = cv2.resize(warped, (300, 300))
                 (h, w) = warped.shape[:2]
                 center = (w // 2, h // 2)
-                angle = 90
                 M = cv2.getRotationMatrix2D(center, 90, 1.0)
                 rotated = cv2.warpAffine(warped, M, (h, w))
                 rotated = cv2.resize(rotated, (width, height))
             else:
                 rotated = warped
-            warped = rotated
-            mean_value = np.mean(warped)
-         
+            warped = cv2.resize(rotated, (config.DETECT_CARD_WIDTH, config.DETECT_CARD_HEIGHT))#[:200, :150]
+            to_detect.append((warped, box))
             cv2.circle(thresh, (cX, cY), 7, (255, 0, 0), -1)
-            cv2.polylines(thresh, [box], True, (0, 255, 0) if mean_value > UPSIDE_DOWN_THRESH else (0, 0, 255), 2)
-            if mean_value > UPSIDE_DOWN_THRESH:
-                data = self.detect(warped) 
-                if len(data) == 0:
-                    class_name = "Unknown"
-                else:
-                    class_name = data[0][0]
-                cv2.putText(thresh, class_name, (cX, cY - 10), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 255, 0), 1)
-                
+            cv2.polylines(thresh, [box], True, (0, 255, 0), 2)
+
+        detector_image = np.zeros((config.DETECT_FRAME_SIZE, config.DETECT_FRAME_SIZE, 3), np.uint8)
+        
+        for i, (warped, box) in enumerate(to_detect):
+            r, c = divmod(i, 6)
+            if r >= 4:
+                continue
+            #sharpen_kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])
+            detector_image[r*config.DETECT_CARD_HEIGHT:(r+1)*config.DETECT_CARD_HEIGHT, c*config.DETECT_CARD_WIDTH:config.DETECT_CARD_WIDTH*(c+1)] = warped#cv2.filter2D(warped, -1, sharpen_kernel)
+
+        cards = [["No Detection" for _ in range(6)] for _ in range(4)]
+
+        for label, corner1, corner2 in self.detect(frame=detector_image, bidding=False):
+            cv2.rectangle(detector_image, corner1, corner2, (255, 0, 0), 2)
+            cv2.putText(detector_image, label, (corner1[0], corner2[1]+30),
+                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+
+            x, y = (corner1[0] + corner2[0]) // 2, (corner1[1] + corner2[1]) // 2
+            r, c = int(y // (300 / 1200 * config.DETECT_FRAME_SIZE)), int(x // (200 / 1200 * config.DETECT_FRAME_SIZE))
+            cards[r][c] = label
+        output = []
+        for i, (warped, box) in enumerate(to_detect):
+            r, c = divmod(i, 6)
+            cv2.putText(thresh, cards[r][c], box[0], cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 2)
+            output.append((cards[r][c], box))
+
+        return thresh, detector_image, output
+
 if __name__ == "__main__":
     with MainCam(config.MAINCAM_INDEX, 1920, 1080) as cam:
+        #cam.create_mask()
         while True:
-            frame = cam.draw_boxes(bidding=True)
-            cv2.imshow("frame", frame)
+            frame = cam.raw_read()
+            if frame is None:
+                continue
+            cam.old_algo(frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
     cv2.destroyAllWindows()
