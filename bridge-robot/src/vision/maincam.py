@@ -33,6 +33,7 @@ class MainCam(Camera):
     def detect_cards(self, frame=None):
         if frame is None:
             frame = self.raw_read()
+        print(frame.shape)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         img_w, img_h = np.shape(frame)[:2]
         bkg_level = np.median(gray[0:img_w, 0:img_h])

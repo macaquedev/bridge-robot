@@ -3,6 +3,7 @@ class AuctionTable extends HTMLElement {
         super();
         this.auctionOrder = ['North', 'East', 'South', 'West'];
         this.currentTurn = 0;
+        this.bidsMade = 0;
     }
 
     connectedCallback() {
@@ -50,12 +51,13 @@ class AuctionTable extends HTMLElement {
         var cell = row.insertCell();
         cell.textContent = bid;
         this.currentTurn++;
+        this.bidsMade++;
     }
 
     undo() {
         var table = this.querySelector('#auction-table');
         // If there are no rows, there's nothing to undo
-        if (table.rows.length === 1) {
+        if (this.bidsMade === 0) {
             return false;
         }
         // Get the last row
@@ -69,6 +71,7 @@ class AuctionTable extends HTMLElement {
         }
         // Decrement the current turn
         this.currentTurn--;
+        this.bidsMade--;
         return true;
     }
 }

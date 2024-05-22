@@ -28,14 +28,23 @@ UPSIDE_DOWN_THRESH = 210
 MAD_THRESHOLD = 2
 ADD_THRESHOLD = 2
 REMOVE_THRESHOLD = 3
-MIN_BID_AREA = 2000
+MIN_BID_AREA = 2300
+
+AUCTION_TOP_POLYGON = shapely.geometry.Polygon([(300, 0), (1080, 0), (1080, 200), (300, 200)])
+AUCTION_LEFT_POLYGON = shapely.geometry.Polygon([(0, 0), (299, 0), (299, 400), (0, 400)])
+AUCTION_RIGHT_POLYGON = shapely.geometry.Polygon([(1080, 607), (1080, 200), (780, 200), (780, 607)])
+AUCTION_BOTTOM_POLYGON = shapely.geometry.Polygon([(0, 400), (780, 400), (780, 607), (0, 607)])
+
 
 TOP_POLYGON = shapely.geometry.Polygon([(300, 0), (1080, 0), (1080, 200), (300, 200)])
 LEFT_POLYGON = shapely.geometry.Polygon([(0, 0), (299, 0), (299, 400), (0, 400)])
 RIGHT_POLYGON = shapely.geometry.Polygon([(1080, 607), (1080, 200), (780, 200), (780, 607)])
 BOTTOM_POLYGON = shapely.geometry.Polygon([(0, 400), (780, 400), (780, 607), (0, 607)])
 
-
+CARDPLAY_TOP_POLYGON = shapely.geometry.Polygon([(711.11111111, 0), (2560, 0), (2560, 474.07407407), (711.11111111, 474.07407407)])
+CARDPLAY_LEFT_POLYGON = shapely.geometry.Polygon([(0, 0), (710.37037037, 0), (710.37037037, 948.14814815), (0, 948.14814815)])
+CARDPLAY_RIGHT_POLYGON = shapely.geometry.Polygon([(2560, 1437.03703704), (2560, 474.07407407), (1851.85185185, 474.07407407), (1851.85185185, 1437.03703704)])
+CARDPLAY_BOTTOM_POLYGON = shapely.geometry.Polygon([(0, 948.14814815), (1851.85185185, 948.14814815), (1851.85185185, 1437.03703704), (0, 1437.03703704)])
 
 SORTFUNCS = [
     lambda x: -x[1][0],
