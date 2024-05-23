@@ -160,7 +160,7 @@ def auction_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, fronte
             for card in to_be_added:
                 for i in range(len(to_be_added[card])):
                     to_be_added[card][i][0] += 1
-                    if to_be_added[card][i][0] == config.ADD_THRESHOLD:
+                    if to_be_added[card][i][0] == config.AUCTION_ADD_THRESHOLD:
                         if card not in in_frame:
                             in_frame[card] = []
                         in_frame[card].append([to_be_added[card][i][1], to_be_added[card][i][2], None])
@@ -187,7 +187,7 @@ def auction_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, fronte
                 to_remove = set()
                 for i in range(len(to_be_removed[card])):
                     to_be_removed[card][i][0] += 1
-                    if to_be_removed[card][i][0] >= config.REMOVE_THRESHOLD:
+                    if to_be_removed[card][i][0] >= config.AUCTION_REMOVE_THRESHOLD:
                         to_remove.add(i)
                         break
                 for i in to_remove:
@@ -209,6 +209,8 @@ def auction_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, fronte
             # if a bid was made, we need to update the current turn and the auction list
             # if no bid was made, we need to check if the current player has a bid in the auction list
             # auction["player"] is a list of cards sorted by coordinate
+            played = False
+            
             if current_error:
                 card, top_left, bottom_right = current_error
                 for i in range(len(in_frame[card])):
@@ -225,7 +227,6 @@ def auction_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, fronte
                         by_player[player].append((card, top_left, bottom_right))
                 for i in range(4):
                     by_player[i].sort(key=config.SORTFUNCS[i])
-                played = False
                 for i in range(4):
                     if not by_player[i]:
                         continue
@@ -361,8 +362,8 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
                 continue
         except Empty:
             continue
-        print(current_turn, on_lead, suit_led)
-
+        #print(current_turn, on_lead, suit_led, tricks, just_played_trick, num_people_played)
+        print([[j[0] for j in i] for i in tricks])
         new_det = []
         for card, polygon in det:
             if card == "No Detection":
@@ -375,7 +376,18 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
                 continue
             new_det.append((card, (cx, cy)))
         det = new_det
-
+        if num_people_played == 4:
+            just_played_trick = True
+            current_trick_index += 1
+            tricks.append([])
+            num_people_played = 0
+            suit_led = None
+            prev_on_table = [None, None, None, None]
+            if current_trick_index == 14:
+                break
+        if just_played_trick and len(new_det) != 0:
+            continue
+        just_played_trick = False
         for card, top_left in det:
             for i in range(len(in_frame[card])):
                 box = in_frame[card][i][0]
@@ -418,7 +430,7 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
         for card in to_be_added:
             for i in range(len(to_be_added[card])):
                 to_be_added[card][i][0] += 1
-                if to_be_added[card][i][0] == config.ADD_THRESHOLD:
+                if to_be_added[card][i][0] == config.CARDPLAY_ADD_THRESHOLD:
                     if card not in in_frame:
                         in_frame[card] = []
                     in_frame[card].append([to_be_added[card][i][1], None])
@@ -445,7 +457,7 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
             to_remove = set()
             for i in range(len(to_be_removed[card])):
                 to_be_removed[card][i][0] += 1
-                if to_be_removed[card][i][0] >= config.REMOVE_THRESHOLD:
+                if to_be_removed[card][i][0] >= config.CARDPLAY_REMOVE_THRESHOLD:
                     to_remove.add(i)
                     break
             for i in to_remove:
@@ -462,6 +474,7 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
                     current_error = (card, position, position)
                 else:
                     person_played[player] = (card, position)
+        played = False
         if current_error:
             card, top_left, bottom_right = current_error
             for i in range(len(in_frame[card])):
@@ -472,12 +485,10 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
                 current_error = None
                 event_queue.put({'type': 'delete_error'})
         else:
-
             diff = [None, None, None, None]
             for i in range(4):
                 if person_played[i] and not prev_on_table[i]:
                     diff[i] = person_played[i]
-            played = False
             for i in range(4):
                 if not diff[i]:
                     continue
@@ -490,15 +501,9 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
                         tricks[-1].append((card, position))
                         if not suit_led:
                             suit_led = card[-1]
-                        if num_people_played == 4:
-                            current_trick_index += 1
-                            tricks.append([])
-                            num_people_played = 0
-                            suit_led = None
-                            if current_trick_index == 14:
-                                break
+                        
                         played = True
-                        prev_on_table = person_played[:]
+                        prev_on_table[i] = person_played[i]
 
                 else:
                     current_error = (card, position, position)
