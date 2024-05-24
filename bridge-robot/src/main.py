@@ -10,7 +10,7 @@ from multiprocessing import Process, Queue, Manager, Pool
 from queue import Empty, Full
 from collections import defaultdict
 import random
-
+import flask_profiler
 import numpy as np
 
 
@@ -337,13 +337,14 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
     to_be_removed = defaultdict(list)
     directions = ["North", "East", "South", "West"]
     directions = directions[["top", "left", "bottom", "right"].index(northDirection):] + directions[:["top", "left", "bottom", "right"].index(northDirection)]
-    tricks = [[]]
+    tricks = []
     prev_on_table = [None, None, None, None]
     current_trick_index = 1
     num_people_played = 0
     on_lead = (directions.index(event["declarer"]) + 1) % 4
     suit_led = None
     current_turn = on_lead
+
     current_error = None
     just_played_trick = True
     def is_valid_card(card):
@@ -379,15 +380,17 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
         if num_people_played == 4:
             just_played_trick = True
             current_trick_index += 1
-            tricks.append([])
             num_people_played = 0
             suit_led = None
             prev_on_table = [None, None, None, None]
             if current_trick_index == 14:
                 break
-        if just_played_trick and len(new_det) != 0:
-            continue
-        just_played_trick = False
+        if just_played_trick:
+            if len(new_det) != 0:
+                continue
+            else:
+                tricks.append([])
+                just_played_trick = False
         for card, top_left in det:
             for i in range(len(in_frame[card])):
                 box = in_frame[card][i][0]
@@ -524,27 +527,23 @@ def cardplay_mode(incoming_frame_queue, outgoing_frame_queue, event_queue, front
         outgoing_frame_queue.put(base64.b64encode(buffer).decode('utf-8'))
         try:
             event = frontend_queue.get(timeout=0)
-            if event == 'undo':
+            if event == 'undo' and current_turn != on_lead:
                 current_turn = (current_turn + 3) % 4
-                if auction[current_turn]:
-                    card, top_left, bottom_right = auction[current_turn].pop()
+                num_people_played -= 1
+                if prev_on_table[current_turn]:
+                    card, position = prev_on_table[current_turn]
+                    prev_on_table[current_turn] = None
                     for i in range(len(in_frame[card])):
-                        if (top_left[0] - in_frame[card][i][0][0]) ** 2 + (top_left[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                        if (top_left[0] - in_frame[card][i][0][0]) ** 2 + (position[1] - in_frame[card][i][0][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                             in_frame[card].pop(i)
                             break
                     for i in range(len(to_be_removed[card])):
-                        if (top_left[0] - to_be_removed[card][i][1][0]) ** 2 + (top_left[1] - to_be_removed[card][i][1][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
+                        if (top_left[0] - to_be_removed[card][i][1][0]) ** 2 + (position[1] - to_be_removed[card][i][1][1]) ** 2 < config.COALESCE_DISTANCE_SQUARED:
                             to_be_removed[card].pop(i)
                             break
-                    if highest_bids[-1] == (card, current_turn):
-                        highest_bids.pop()
-                    if card == "Pass":
-                        num_passes -= 1
-                    elif card == "Double":
-                        doubled = False
-                    elif card == "Redouble":
-                        redoubled = False
-                        doubled = True
+                    if tricks[-1][-1] == (card, position):
+                        tricks[-1].pop()
+                    
                 current_error = None
                 event_queue.put({"type": "delete_error"})
         except Empty:
@@ -573,8 +572,21 @@ def create_app():
     p_arduino.start()
     p_camera.start()
     app = Flask(__name__)
+    app.config["flask_profiler"] = {
+        "enabled": True,
+        "basicAuth":{
+            "enabled": False
+        },
+        "storage": {
+            "engine": "sqlite",
+            "FILE": "flask_profiler.sql"
+        },
+        "ignore": [
+            "^/static/.*"
+        ]
+    }
     socketio = SocketIO(app, async_mode="threading", cors_allowed_origins='*')
-    
+    flask_profiler.init_app(app)
 
     @app.route('/send_command', methods=['POST'])
     def send_command():

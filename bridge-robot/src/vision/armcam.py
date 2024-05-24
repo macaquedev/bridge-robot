@@ -6,6 +6,7 @@ import config
 import cv2
 from ultralytics import YOLO
 import numpy as np
+from src.vision.maincam import MainCam
 
 
 class ArmCam(Camera):
@@ -76,11 +77,26 @@ class ArmCam(Camera):
         #    print(data)
         
 
+#if __name__ == "__main__":
+#    with ArmCam(config.ARMCAM_INDEX, config.ARMCAM_WIDTH, config.ARMCAM_HEIGHT) as cam:
+#        while True:
+#            frame = cam.draw_boxes()
+#            cv2.imshow("frame", frame)
+#            if cv2.waitKey(1) & 0xFF == ord('q'):
+#                break
+#    cv2.destroyAllWindows()
+
 if __name__ == "__main__":
-    with ArmCam(config.ARMCAM_INDEX, config.ARMCAM_WIDTH, config.ARMCAM_HEIGHT) as cam:
+    with MainCam(config.MAINCAM_INDEX, 3840, 2160) as cam:
         while True:
-            frame = cam.draw_boxes()
-            cv2.imshow("frame", frame)
+            t1 = time.time()
+            thresh, detector_image, output = cam.detect_cards(draw=False)
+            t2 = time.time()
+            cv2.putText(thresh, f"FPS: {1/(t2-t1)}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            print(1/(t2-t1))
+            cv2.imshow("frame", thresh)
+            cv2.imshow("detector_image", detector_image)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+            
     cv2.destroyAllWindows()

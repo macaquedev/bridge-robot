@@ -134,6 +134,7 @@
     <script>
         var socket = io.connect('http://127.0.0.1:5000');
         var labelsDisplayed = false;
+        var currentState = "auction";
         socket.on('image', function (msg) {
             document.getElementById('output').src = 'data:image/jpeg;base64,' + msg;
             if (!labelsDisplayed) {
@@ -188,11 +189,21 @@
             if (data["type"] == "new_bid") {
                 auction.addBid(data["card"]);
             } else if (data["type"] == "error") {
-                var errorElement = document.createElement('div');
-                errorElement.id = 'error-message'; // Add an id to the error element
-                errorElement.textContent = `Illegal bid: ${data["player"]} bid ${data["card"]}`;
-                errorElement.style.color = 'red'; // Change the color to red to indicate an error
-                auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+                if (currentState == "auction") {
+                    var errorElement = document.createElement('div');
+                    errorElement.id = 'error-message'; // Add an id to the error element
+                    errorElement.textContent = `Illegal bid: ${data["player"]} bid ${data["card"]}`;
+                    errorElement.style.color = 'red'; // Change the color to red to indicate an error
+                    auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+                }
+                else {
+                    var errorElement = document.createElement('div');
+                    errorElement.id = 'error-message'; // Add an id to the error element
+                    errorElement.textContent = `Illegal card played: ${data["card"]} by ${data["player"]}`;
+                    errorElement.style.color = 'red'; // Change the color to red to indicate an error
+                    auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+                
+                }        
             } else if (data["type"] == "delete_error") {
                 var errorElement = document.getElementById('error-message');
                 if (errorElement) {
@@ -216,6 +227,7 @@
                     trickCounter.style.display = 'block';
                     trickCounter.setContract(data["contract"] + (data["redoubled"] ? "XX" : (data["doubled"] ? "X" : ""))); 
                     trickCounter.setDeclarer(data["declarer"])
+                    currentState = "cardplay";
                 }
             }
         });
@@ -252,7 +264,12 @@
                 confirmButton.remove();
                 cancelButton.remove();
                 undoButton.disabled = false;
-                if (auction.undo()) socket.emit("undo");
+                if (currentState == "auction") {
+                    if (auction.undo()) socket.emit("undo");
+                }
+                else {
+                    if (trickCounter.undo()) socket.emit("undo");
+                }
             });
 
             cancelButton.addEventListener('click', function () {
