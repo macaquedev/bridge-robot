@@ -97,17 +97,86 @@
 #    print("False")
 
 
-a, b = [int(i) for i in input().strip().split()]
-n = int(input())
-curr = 0
-for x in range(200000000000000):
-    curr = a * x
-    if curr % b == n % b:
-        break
-    elif (-curr) % b == n % b:
-        curr = -curr
-        x = -x
-        break
+import ray
+from src.vision.maincam import MainCam
+import config
+import cv2
+import time
 
-print(x)
-print((n-curr) // b)
+
+ray.init()
+
+@ray.remote
+class CameraProcess:
+    def __init__(self):
+        self.curr_mode = None
+        self.cap = MainCam(config.MAINCAM_INDEX, config.MAINCAM_WIDTH, config.MAINCAM_HEIGHT)
+
+    def set_mode(self, mode):
+        self.curr_mode = mode
+
+    def process(self):
+        frame = self.cap.raw_read()
+        match self.curr_mode:
+            case "auction":
+                image = self.cap.preprocess_image(frame)
+                det = self.cap.detect(image, bidding=True, preprocess=False)
+                return (image, det)
+            case "cardplay":
+                d = self.cap.detect_cards(frame)
+                return d
+            case _:
+                d = self.cap.preprocess_image(frame)
+                return d, None
+            
+
+if __name__ == "__main__":
+
+    # Create an instance of the CameraProcess actor.
+    camera_process = CameraProcess.remote()
+
+    # Set the mode of the camera process.
+    camera_process.set_mode.remote("auction")  # Or whatever mode you want to set.
+
+    # Initialize the frame rate and the time of the previous frame.
+    frame_rate = 0.0
+    prev_time = time.time()
+
+    # Continuously get the last frame from the camera process and output it.
+    while True:
+        # Get the last frame from the camera process.
+        frame_future = camera_process.process.remote()
+
+        # Wait for the frame to be ready and get the result.
+        frame, det = ray.get(frame_future)
+        frame_copy = frame.copy()
+        # Calculate the frame rate using an exponential moving average.
+        curr_time = time.time()
+        alpha = 0.1  # Adjust as needed.
+        frame_rate = (1 - alpha) * frame_rate + alpha * (1.0 / (curr_time - prev_time))
+        prev_time = curr_time
+
+        # Draw the frame rate on the frame.
+        cv2.putText(frame_copy, f"FPS: {frame_rate:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+        # Display the frame.
+        cv2.imshow("Frame", frame_copy)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
+    ray.shutdown()
+    camera_process.cap.release()
+# a, b = [int(i) for i in input().strip().split()]
+# n = int(input())
+# curr = 0
+# for x in range(200000000000000):
+#     curr = a * x
+#     if curr % b == n % b:
+#         break
+#     elif (-curr) % b == n % b:
+#         curr = -curr
+#         x = -x
+#         break
+# 
+# print(x)
+# print((n-curr) // b)

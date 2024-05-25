@@ -72,7 +72,7 @@ class Camera:
             if bidding and abs(x2-x) * abs(y2-y) < config.MIN_BID_AREA:
                 continue
             data.append((result.names[int(box.cls.item())], (x, y), (x2, y2)))
-
+        print("DETECT", data)
         return data
     
 
