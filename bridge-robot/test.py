@@ -1,3 +1,6 @@
+import cv2
+import time
+
 #import cv2
 #import mediapipe as mp
 #import numpy as np
@@ -97,17 +100,60 @@
 #    print("False")
 
 
-a, b = [int(i) for i in input().strip().split()]
-n = int(input())
-curr = 0
-for x in range(200000000000000):
-    curr = a * x
-    if curr % b == n % b:
-        break
-    elif (-curr) % b == n % b:
-        curr = -curr
-        x = -x
+# a, b = [int(i) for i in input().strip().split()]
+# n = int(input())
+# curr = 0
+# for x in range(200000000000000):
+#     curr = a * x
+#     if curr % b == n % b:
+#         break
+#     elif (-curr) % b == n % b:
+#         curr = -curr
+#         x = -x
+#         break
+# 
+# print(x)
+# print((n-curr) // b)
+
+cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
+
+# Check if the camera is opened successfully
+if not cap.isOpened():
+    print("Error opening the camera")
+    exit()
+
+# Get the camera's frame width and height
+frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# Initialize variables for FPS calculation
+start_time = time.time()
+frame_count = 0
+
+while True:
+    # Read the frame from the camera
+    ret, frame = cap.read()
+
+    if not ret:
+        print("Error reading the frame")
         break
 
-print(x)
-print((n-curr) // b)
+    # Calculate FPS
+    frame_count += 1
+    elapsed_time = time.time() - start_time
+    fps = frame_count / elapsed_time
+
+    # Display FPS on the frame
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+
+    # Display the frame
+    cv2.imshow('Camera Test', frame)
+
+    # Exit loop if 'q' is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the resources
+cap.release()
+cv2.destroyAllWindows()

@@ -133,10 +133,16 @@ class MainCam(Camera):
 if __name__ == "__main__":
     with MainCam(config.MAINCAM_INDEX, 1920, 1080) as cam:
         #cam.create_mask()
+        #while True:
+        #    thresh, detector_image, output = cam.detect_cards()
+        #    cv2.imshow("thresh", thresh)
+        #    cv2.imshow("detector_image", detector_image)
+        #    if cv2.waitKey(1) & 0xFF == ord('q'):
+        #        break
         while True:
-            thresh, detector_image, output = cam.detect_cards()
-            cv2.imshow("thresh", thresh)
-            cv2.imshow("detector_image", detector_image)
+            frame = cam.draw_boxes(bidding=True)
+            cv2.imshow("frame", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
     cv2.destroyAllWindows()

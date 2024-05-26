@@ -188,8 +188,12 @@
             console.log(data);
             if (data["type"] == "new_bid") {
                 auction.addBid(data["card"]);
+            } else if (data["type"] == "set_tricks") {
+                var trickCounter = document.querySelector('trick-counter')
+                trickCounter.setTricks(data["side"], data["number"]);
             } else if (data["type"] == "error") {
                 if (currentState == "auction") {
+
                     var errorElement = document.createElement('div');
                     errorElement.id = 'error-message'; // Add an id to the error element
                     errorElement.textContent = `Illegal bid: ${data["player"]} bid ${data["card"]}`;
@@ -210,19 +214,43 @@
                     errorElement.parentNode.removeChild(errorElement);
                 }
             } else if (data["type"] == "end_auction") {
+                console.log(data["passout"])
                 if (data["passout"]) {
-                    console.log("HI");
+                    console.log("Did not start cardplay");
+                    fetch('/record_result', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "hand_number": "{{ boardnumber }}",
+                            "dealer": "{{ dealer }}",
+                            "vulnerability": "{{ vulnerability }}",
+                            "contract": "Pass",
+                            "declarer": "None",
+                            "result": "None",
+                            "score": 0,
+                            "imps": 0
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle response data
+                        })
+                        .catch(error => {
+                            // Handle error
+                        });
                     document.body.innerHTML = `
             <div class="container text-center">
                 <div class="row justify-content-center align-items-center" style="height: 100vh;">
                     <div class="col-12">
                         <h1 class="display-4">Result: Passed Out</h1>
-                        <button class="btn btn-primary mt-5" onclick="window.history.back();">Back</button>
-                    </div>
-                </div>
+                        <button class="btn btn-primary mt-5" onclick="window.location.href='/watch?' + new Date().getTime();">Back</button>                </div>
             </div>
         `;
+
                 } else {
+                    console.log("Started cardplay!")
                     var trickCounter = document.querySelector('trick-counter')
                     trickCounter.style.display = 'block';
                     trickCounter.setContract(data["contract"] + (data["redoubled"] ? "XX" : (data["doubled"] ? "X" : ""))); 

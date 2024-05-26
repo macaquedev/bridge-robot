@@ -5,13 +5,14 @@ import threading
 
 
 class Arduino:
-    def __init__(self, port="/dev/ttyUSB0", baud_rate=115200):
+    def __init__(self, baud_rate=115200):
         self.lock = threading.Lock()
         arduino_ports = [
             p.device
             for p in serial.tools.list_ports.comports()
             if 'wch.cn' in p.manufacturer  # may need tweaking to match new arduinos
         ]
+        print(serial.tools.list_ports.comports())
         if not arduino_ports:
             raise IOError("No Arduino found")
         if len(arduino_ports) > 1:
