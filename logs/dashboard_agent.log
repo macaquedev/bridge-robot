@@ -1,0 +1,1304 @@
+2024-05-25 19:43:30,471	INFO agent.py:139 -- Dashboard agent grpc address: 127.0.0.1:63205
+2024-05-25 19:43:30,474	INFO utils.py:112 -- Get all modules by type: DashboardAgentModule
+2024-05-25 19:43:31,648	WARNING job_manager.py:67 -- Failed to Import win32api. For best usage experience run 'conda install pywin32'. Import error: No module named 'win32api'
+2024-05-25 19:43:33,216	INFO utils.py:145 -- Available modules: [<class 'ray.dashboard.modules.event.event_agent.EventAgent'>, <class 'ray.dashboard.modules.healthz.healthz_agent.HealthzAgent'>, <class 'ray.dashboard.modules.job.job_agent.JobAgent'>, <class 'ray.dashboard.modules.log.log_agent.LogAgent'>, <class 'ray.dashboard.modules.log.log_agent.LogAgentV1Grpc'>, <class 'ray.dashboard.modules.reporter.reporter_agent.ReporterAgent'>, <class 'ray.dashboard.modules.serve.serve_rest_api_impl.create_serve_rest_api.<locals>.ServeRestApiImpl'>]
+2024-05-25 19:43:33,229	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.event.event_agent.EventAgent'>
+2024-05-25 19:43:33,230	INFO event_agent.py:38 -- Event agent cache buffer size: 10240
+2024-05-25 19:43:33,230	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.healthz.healthz_agent.HealthzAgent'>
+2024-05-25 19:43:33,230	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.job.job_agent.JobAgent'>
+2024-05-25 19:43:33,233	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.log.log_agent.LogAgent'>
+2024-05-25 19:43:33,464	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.log.log_agent.LogAgentV1Grpc'>
+2024-05-25 19:43:33,464	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.reporter.reporter_agent.ReporterAgent'>
+2024-05-25 19:43:33,592	INFO agent.py:155 -- Loading DashboardAgentModule: <class 'ray.dashboard.modules.serve.serve_rest_api_impl.create_serve_rest_api.<locals>.ServeRestApiImpl'>
+2024-05-25 19:43:33,592	INFO agent.py:160 -- Loaded 7 modules.
+2024-05-25 19:43:33,609	INFO http_server_agent.py:71 -- Dashboard agent http address: 127.0.0.1:52365
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <PlainResource  /api/local_raylet_healthz> -> <function HealthzAgent.health_check at 0x00000202D7711E10>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <PlainResource  /api/local_raylet_healthz> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [POST] <PlainResource  /api/job_agent/jobs/> -> <function JobAgent.submit_job at 0x00000202D7881AB0>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <PlainResource  /api/job_agent/jobs/> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [POST] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/stop> -> <function JobAgent.stop_job at 0x00000202D7881C60>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/stop> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [DELETE] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}> -> <function JobAgent.delete_job at 0x00000202D7881E10>
+2024-05-25 19:43:33,621	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/logs> -> <function JobAgent.get_job_logs at 0x00000202D7881FC0>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/logs> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/logs/tail> -> <function JobAgent.tail_job_logs at 0x00000202D7882170>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <DynamicResource  /api/job_agent/jobs/{job_or_submission_id}/logs/tail> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <PlainResource  /api/ray/version> -> <function create_serve_rest_api.<locals>.ServeRestApiImpl.get_version at 0x00000202D8D532E0>
+2024-05-25 19:43:33,629	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <PlainResource  /api/ray/version> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,634	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <PlainResource  /api/serve/applications/> -> <function create_serve_rest_api.<locals>.ServeRestApiImpl.get_serve_instance_details at 0x00000202D8D53370>
+2024-05-25 19:43:33,634	INFO http_server_agent.py:78 -- <ResourceRoute [DELETE] <PlainResource  /api/serve/applications/> -> <function create_serve_rest_api.<locals>.ServeRestApiImpl.delete_serve_applications at 0x00000202D8D535B0>
+2024-05-25 19:43:33,636	INFO http_server_agent.py:78 -- <ResourceRoute [PUT] <PlainResource  /api/serve/applications/> -> <function create_serve_rest_api.<locals>.ServeRestApiImpl.put_all_applications at 0x00000202D8D53760>
+2024-05-25 19:43:33,663	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <PlainResource  /api/serve/applications/> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,663	INFO http_server_agent.py:78 -- <ResourceRoute [GET] <StaticResource  /logs -> WindowsPath('C:/Users/alexp/AppData/Local/Temp/ray/session_2024-05-25_19-43-20_562179_2396/logs')> -> <bound method StaticResource._handle of <StaticResource  /logs -> WindowsPath('C:/Users/alexp/AppData/Local/Temp/ray/session_2024-05-25_19-43-20_562179_2396/logs')>>
+2024-05-25 19:43:33,689	INFO http_server_agent.py:78 -- <ResourceRoute [OPTIONS] <StaticResource  /logs -> WindowsPath('C:/Users/alexp/AppData/Local/Temp/ray/session_2024-05-25_19-43-20_562179_2396/logs')> -> <bound method _PreflightHandler._preflight_handler of <aiohttp_cors.cors_config._CorsConfigImpl object at 0x00000202D8D10EB0>>
+2024-05-25 19:43:33,694	INFO http_server_agent.py:79 -- Registered 20 routes.
+2024-05-25 19:43:33,799	INFO event_agent.py:56 -- Report events to 127.0.0.1:50467
+2024-05-25 19:43:33,803	INFO event_utils.py:132 -- Monitor events logs modified after 1716660811.373611 on C:\Users\alexp\AppData\Local\Temp\ray\session_2024-05-25_19-43-20_562179_2396\logs\events, the source types are all.
+2024-05-25 19:43:34,167	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:36,895	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:39,491	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:42,117	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:44,702	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:47,314	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:49,897	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:52,498	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:55,106	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:43:57,707	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:00,282	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:02,851	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:05,441	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:08,025	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:10,479	INFO event_utils.py:170 -- Found new event log file: C:\Users\alexp\AppData\Local\Temp\ray\session_2024-05-25_19-43-20_562179_2396\logs\events\event_CORE_WORKER_9536.log
+2024-05-25 19:44:10,490	INFO event_utils.py:170 -- Found new event log file: C:\Users\alexp\AppData\Local\Temp\ray\session_2024-05-25_19-43-20_562179_2396\logs\events\event_RAYLET.log
+2024-05-25 19:44:10,616	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:13,204	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:15,782	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:18,339	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:20,926	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:23,497	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:26,046	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:28,614	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:31,195	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:33,773	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:36,340	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:38,950	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:41,536	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:44,153	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:46,771	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:49,379	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:51,998	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:54,597	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:57,201	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:44:59,793	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:02,395	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:05,002	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:07,605	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:10,217	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:12,810	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:15,418	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:18,005	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:20,617	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:23,238	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:25,864	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:28,481	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:31,115	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:33,728	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:36,322	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:38,934	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:41,557	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:44,161	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:46,791	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:49,404	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:52,035	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:54,658	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:57,271	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:45:59,875	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:02,478	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:05,102	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:07,713	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:10,325	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:12,930	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:15,548	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:18,151	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:20,758	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:23,371	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:25,981	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:28,588	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:31,211	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:33,828	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:36,432	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:39,065	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:41,655	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:44,254	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:46,825	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:49,426	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:52,045	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:54,883	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:46:57,494	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:00,107	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:02,725	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:05,320	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:07,908	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:10,515	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:13,119	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:15,728	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:18,337	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:20,930	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:23,527	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:26,133	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:28,742	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:31,347	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:33,957	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:36,557	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:39,159	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:41,755	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:44,370	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:46,994	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:49,614	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:52,227	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:54,846	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:47:57,459	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:00,046	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:02,638	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:05,224	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:07,847	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:10,454	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:13,051	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:15,612	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:18,179	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:20,747	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:23,316	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:25,885	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:28,449	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'
+2024-05-25 19:48:31,010	ERROR reporter_agent.py:1218 -- Error publishing node physical stats.
+Traceback (most recent call last):
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 1201, in _perform_iteration
+    stats = self._get_all_stats()
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 724, in _get_all_stats
+    "raylet": self._get_raylet(),
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\dashboard\modules\reporter\reporter_agent.py", line 643, in _get_raylet
+    return raylet_proc.as_dict(
+  File "C:\Users\alexp\AppData\Local\pypoetry\Cache\virtualenvs\bridge-robot-WMeMRp1k-py3.10\lib\site-packages\ray\thirdparty_files\psutil\__init__.py", line 546, in as_dict
+    raise ValueError(msg)
+ValueError: invalid attr name 'num_fds'

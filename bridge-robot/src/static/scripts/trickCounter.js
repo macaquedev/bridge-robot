@@ -30,6 +30,10 @@ class TrickCounter extends HTMLElement {
         `;
     }
 
+    undo() {
+        return true;
+    }
+
     setTricks(side, number) {
         if (side === 'NS') {
             this.nsTricks = number;

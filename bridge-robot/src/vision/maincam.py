@@ -3,10 +3,11 @@ import cv2
 import config
 import numpy as np
 import time
+from src import utils
 
 class MainCam(Camera):
     def __init__(self, camera_index, width, height):
-        super().__init__(camera_index, width, height, True)
+        super().__init__(camera_index, width, height, config.CARDNET_PATH, config.CARDNET_CONFIDENCE, True)
         self.mask = self.create_mask()
 
     def create_mask(self):
@@ -47,7 +48,7 @@ class MainCam(Camera):
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
             centroid = (cX, cY)     
-            if not any(abs(cX - x) ** 2 + abs(cY - y) ** 2 < config.COALESCE_DISTANCE_SQUARED for x, y in centroids):
+            if not any(utils.near(point, centroid, cardplay=True) for point in centroids):
                 filtered_cnts.append(cnts[i])
                 centroids.append(centroid)
         cnts = filtered_cnts
@@ -60,7 +61,7 @@ class MainCam(Camera):
         sorted_pairs = sorted(pairs, key=lambda x: x[1])
         cnts = [pair[0] for pair in sorted_pairs]
         for i in range(len(cnts)):
-            if cv2.contourArea(cnts[i]) < config.CARD_AREA:
+            if not config.MIN_CARD_AREA < cv2.contourArea(cnts[i]) < config.MAX_CARD_AREA:
                 continue
             num_contours += 1
             M = cv2.moments(cnts[i])
@@ -126,22 +127,18 @@ class MainCam(Camera):
         output = []
         for i, (warped, box) in enumerate(to_detect):
             r, c = divmod(i, 6)
-            cv2.putText(thresh, cards[r][c], box[0], cv2.FONT_HERSHEY_SIMPLEX, 10, (43, 75, 255), 16)
+            if draw and cards[r][c] != "No Detection":
+                cv2.putText(thresh, cards[r][c], box[0], cv2.FONT_HERSHEY_SIMPLEX, 10, (43, 75, 255), 16)
             output.append((cards[r][c], box))
         return thresh, detector_image, output
 
 if __name__ == "__main__":
-    with MainCam(config.MAINCAM_INDEX, 1920, 1080) as cam:
+    with MainCam(config.MAINCAM_INDEX, config.MAINCAM_WIDTH, config.MAINCAM_HEIGHT) as cam:
         #cam.create_mask()
-        #while True:
-        #    thresh, detector_image, output = cam.detect_cards()
-        #    cv2.imshow("thresh", thresh)
-        #    cv2.imshow("detector_image", detector_image)
-        #    if cv2.waitKey(1) & 0xFF == ord('q'):
-        #        break
         while True:
-            frame = cam.draw_boxes(bidding=True)
-            cv2.imshow("frame", frame)
+            thresh, detector_image, output = cam.detect_cards(draw=True)
+            cv2.imshow("thresh", cv2.resize(thresh, (0, 0), fx=0.3, fy=0.3))
+            cv2.imshow("detector_image", detector_image)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 

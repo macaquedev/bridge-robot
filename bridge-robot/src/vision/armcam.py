@@ -11,12 +11,13 @@ from src.vision.maincam import MainCam
 
 class ArmCam(Camera):
     def __init__(self, camera_index, width, height):
-        super().__init__(camera_index, width, height, True)
-    
+        super().__init__(camera_index, width, height, config.ARMCAM_CARDNET_PATH, config.ARMCAM_CARDNET_CONFIDENCE, True)
+        self.cards = []
 
-    def detect(self, frame=None):
+
+    def detect(self, frame=None, bidding=None, width=None, height=None):
         data = super().detect(frame, bidding=False, preprocess=False)
-        return [card for card in data if card[1][1]+card[2][1] < self.height]
+        return [card for card in data if card[1][1]+card[2][1] < 2000]
     
 
     def calibrate(self, arduino):
@@ -26,7 +27,7 @@ class ArmCam(Camera):
             arduino.send_data_and_wait_for_acknowledgement(f"STEPPER {curr}")
             time.sleep(0.5)
             detections.extend([(curr, self.detect()) for _ in range(5)])
-            cv2.imshow("HI", self.draw_boxes())
+            cv2.imshow("HI", cv2.resize(self.draw_boxes(bidding=False), (0, 0), fx=0.5, fy=0.5))
             cv2.waitKey(1)
         arduino.send_data_and_wait_for_acknowledgement("STEPPER 200")
         arduino.send_data_and_wait_for_acknowledgement("ARMDOWN")
@@ -43,7 +44,6 @@ class ArmCam(Camera):
             if len(cards[key]) < config.ARMCAM_MISDETECTION_THRESHOLD:
                 cards.pop(key)
         result = [(card, len(data)) for card, data in cards.items()]
-        print(sorted(result))
         distances = []
         for card, data in cards.items():
             for i in range(len(data)):
@@ -54,8 +54,7 @@ class ArmCam(Camera):
                         continue
                     distances.append(abs(stepper_pos_1 - stepper_pos_2) / abs(px_1 - px_2))
         mm_per_px = robust_mean(np.array(distances))
-        result.sort(key=lambda card: cards[card[0]])
-        print([i[0] for i in result])
+        output = []
         for card, _ in result:
             local_distances = []
             for i in range(len(cards[card])):
@@ -69,34 +68,26 @@ class ArmCam(Camera):
             if abs(local_mm_per_px - mm_per_px) > 0.1:
                 local_mm_per_px = mm_per_px
             m = robust_mean(np.array([data[0] + (data[1]-config.ARMCAM_OFFSET) * local_mm_per_px for data in cards[card]]))
-            arduino.send_data_and_wait_for_acknowledgement(f"STEPPER {m}")
-            input()
-            arduino.send_data_and_wait_for_acknowledgement("GRAB")
-            arduino.send_data_and_wait_for_acknowledgement("RELEASE")
-        #for card, data in cards.items():
-        #    print(data)
+            output.append((card, m))
+            
+        self.cards = sorted(output, key=lambda x: x[1])
+        print(self.cards)
+
+    def play_card(self, card, arduino):
+        for c, pos in self.cards:
+            if c == card:
+                arduino.send_data_and_wait_for_acknowledgement(f"STEPPER {pos}")
+                arduino.send_data_and_wait_for_acknowledgement("GRAB")
+                arduino.send_data_and_wait_for_acknowledgement("RELEASE")
+                return True
+        return False
         
 
-#if __name__ == "__main__":
-#    with ArmCam(config.ARMCAM_INDEX, config.ARMCAM_WIDTH, config.ARMCAM_HEIGHT) as cam:
-#        while True:
-#            frame = cam.draw_boxes()
-#            cv2.imshow("frame", frame)
-#            if cv2.waitKey(1) & 0xFF == ord('q'):
-#                break
-#    cv2.destroyAllWindows()
-
 if __name__ == "__main__":
-    with MainCam(config.MAINCAM_INDEX, 3840, 2160) as cam:
+    with ArmCam(config.ARMCAM_INDEX, config.ARMCAM_WIDTH, config.ARMCAM_HEIGHT) as cam:
         while True:
-            t1 = time.time()
-            thresh, detector_image, output = cam.detect_cards(draw=False)
-            t2 = time.time()
-            cv2.putText(thresh, f"FPS: {1/(t2-t1)}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            print(1/(t2-t1))
-            cv2.imshow("frame", thresh)
-            cv2.imshow("detector_image", detector_image)
+            frame = cam.draw_boxes(bidding=False)
+            cv2.imshow("frame", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-            
     cv2.destroyAllWindows()

@@ -33,12 +33,13 @@ class DShowCamera(WebcamVideoStream):  # i hate this!
         
 
 class Camera:
-    def __init__(self, camera_index, height, width, rotate=False):
+    def __init__(self, camera_index, height, width, cardnet_path, cardnet_confidence, rotate=False):
         self.cap = DShowCamera(camera_index, height, width).start()
         self.width = self.cap.stream.get(cv2.CAP_PROP_FRAME_WIDTH)
         self.height = self.cap.stream.get(cv2.CAP_PROP_FRAME_HEIGHT)
         self.rotate = rotate
-        self.cardnet = YOLO(config.CARDNET_PATH)
+        self.cardnet = YOLO(cardnet_path)
+        self.cardnet_confidence = cardnet_confidence
         self.bidding_box_net = YOLO(config.BIDDING_BOX_NET_PATH)
         self.bidding = True
 
@@ -61,7 +62,7 @@ class Camera:
         if bidding:
             result = next(self.bidding_box_net([frame], stream=True, conf=config.BIDDING_BOX_NET_CONFIDENCE, verbose=False))  
         else:
-            result = next(self.cardnet([frame], stream=True, conf=config.CARDNET_CONFIDENCE, verbose=False)) 
+            result = next(self.cardnet([frame], stream=True, conf=self.cardnet_confidence, verbose=False)) 
 
         data = []
         

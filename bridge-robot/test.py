@@ -1,159 +1,33 @@
 import cv2
-import time
 
-#import cv2
-#import mediapipe as mp
-#import numpy as np
-#from collections import deque, Counter
-#
-#mp_drawing = mp.solutions.drawing_utils
-#mp_hands = mp.solutions.hands
-#
-## Start capturing video from the webcam
-#cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
-#
-#prev_centroids = {}
-#directions = {}
-#hand_detected = {}
-#
-#with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
-#    while cap.isOpened():
-#        ret, frame = cap.read()
-#        if not ret:
-#            continue
-#
-#        # Flip the image horizontally for a later selfie-view display
-#        image = cv2.cvtColor(cv2.flip(frame, 1), cv2.COLOR_BGR2RGB)
-#
-#        # Process the image and find hand landmarks
-#        results = hands.process(image)
-#
-#        # Convert the image color back so it can be displayed
-#        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-#
-#        # Draw hand landmarks of each hand
-#        if results.multi_hand_landmarks:
-#            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
-#                mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-#
-#                # Calculate the centroid of the hand
-#                coords = np.zeros((21, 2))
-#                for j, landmark in enumerate(hand_landmarks.landmark):
-#                    coords[j] = [landmark.x * image.shape[1], landmark.y * image.shape[0]]
-#                centroid_x, centroid_y = np.mean(coords, axis=0)
-#
-#                # Use the handedness index as the hand ID
-#                hand_id = handedness.classification[0].index
-#
-#                # Determine the direction of the hand
-#                if hand_id not in directions:
-#                    if hand_id in prev_centroids:
-#                        dx, dy = centroid_x - prev_centroids[hand_id][0], centroid_y - prev_centroids[hand_id][1]
-#                        if abs(dx) > abs(dy):
-#                            direction = "left" if dx > 0 else "right"
-#                        else:
-#                            direction = "top" if dy > 0 else "bottom"
-#                        directions[hand_id] = direction
-#                        print(f"Hand {hand_id} initially moved from {direction}")
-#
-#                if hand_id not in prev_centroids:
-#                    prev_centroids[hand_id] = (centroid_x, centroid_y)
-#
-#                hand_detected[hand_id] = True
-#
-#        # Remove the stored centroid and direction for hands that are no longer detected
-#        hands_to_remove = set(prev_centroids.keys()) - set(hand_detected.keys())
-#        for hand_id in hands_to_remove:
-#            if hand_id in prev_centroids:
-#                del prev_centroids[hand_id]
-#            if hand_id in directions:
-#                del directions[hand_id]
-#
-#        hand_detected.clear()
-#
-#        # Display the image
-#        cv2.imshow('MediaPipe Hands', image)
-#
-#        # Exit loop if 'q' is pressed
-#        if cv2.waitKey(5) & 0xFF == ord('q'):
-#            break
-#
-#cap.release()
-#cv2.destroyAllWindows()
+def test_camera(index):
+    # Open the camera
+    cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)
 
+    # Check if the camera opened successfully
+    if not cap.isOpened():
+        print(f"Error opening camera with index {index}")
+        return
 
-#a = int(input())
-#
-#
-#for i in range(2, 1000000000000000000000):
-#    curr = a ** (1/i)
-#    
-#    if curr < 2:
-#        print("False")
-#        break
-#
-#    if curr == int(curr):
-#        print("True")
-#        break
-    
-#else:
-#    print("False")
+    while True:
+        # Capture frame-by-frame
+        ret, frame = cap.read()
 
+        # If frame is read correctly, ret is Truek
+        if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
 
-# a, b = [int(i) for i in input().strip().split()]
-# n = int(input())
-# curr = 0
-# for x in range(200000000000000):
-#     curr = a * x
-#     if curr % b == n % b:
-#         break
-#     elif (-curr) % b == n % b:
-#         curr = -curr
-#         x = -x
-#         break
-# 
-# print(x)
-# print((n-curr) // b)
+        # Display the resulting frame
+        cv2.imshow('Camera Test', frame)
 
-cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
+        # Break the loop on 'q' key press
+        if cv2.waitKey(1) == ord('q'):
+            break
 
-# Check if the camera is opened successfully
-if not cap.isOpened():
-    print("Error opening the camera")
-    exit()
+    # When everything done, release the capture and destroy windows
+    cap.release()
+    cv2.destroyAllWindows()
 
-# Get the camera's frame width and height
-frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-# Initialize variables for FPS calculation
-start_time = time.time()
-frame_count = 0
-
-while True:
-    # Read the frame from the camera
-    ret, frame = cap.read()
-
-    if not ret:
-        print("Error reading the frame")
-        break
-
-    # Calculate FPS
-    frame_count += 1
-    elapsed_time = time.time() - start_time
-    fps = frame_count / elapsed_time
-
-    # Display FPS on the frame
-    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-
-    # Display the frame
-    cv2.imshow('Camera Test', frame)
-
-    # Exit loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release the resources
-cap.release()
-cv2.destroyAllWindows()
+if __name__ == "__main__":
+    test_camera(2)  # Change the index if you have multiple cameras

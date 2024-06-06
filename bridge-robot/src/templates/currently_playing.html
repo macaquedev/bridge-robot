@@ -192,23 +192,29 @@
                 var trickCounter = document.querySelector('trick-counter')
                 trickCounter.setTricks(data["side"], data["number"]);
             } else if (data["type"] == "error") {
-                if (currentState == "auction") {
-
-                    var errorElement = document.createElement('div');
-                    errorElement.id = 'error-message'; // Add an id to the error element
-                    errorElement.textContent = `Illegal bid: ${data["player"]} bid ${data["card"]}`;
-                    errorElement.style.color = 'red'; // Change the color to red to indicate an error
-                    auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+                var errorElement = document.createElement('div');
+                errorElement.id = 'error-message'; // Add an id to the error element
+                errorElement.textContent = data["message"];
+                errorElement.style.color = 'red'; // Change the color to red to indicate an error
+                auction.parentNode.insertBefore(errorElement, auction.nextSibling);
+            } else if (data["type"] == "start_dummy") {
+                var dummyElement = document.createElement('div');
+                dummyElement.id = 'dummy-message'; // Add an id to the dummy element
+                dummyElement.textContent = 'Dummy:';
+                dummyElement.style.color = 'green'; // Change the color to green to indicate a dummy
+                auction.parentNode.insertBefore(dummyElement, auction.nextSibling);
+            } else if (data["type"] == "place_dummy_card") {
+                var dummyElement = document.getElementById('dummy-message');
+                if (dummyElement) {
+                    dummyElement.textContent += " " + data["card"];
                 }
-                else {
-                    var errorElement = document.createElement('div');
-                    errorElement.id = 'error-message'; // Add an id to the error element
-                    errorElement.textContent = `Illegal card played: ${data["card"]} by ${data["player"]}`;
-                    errorElement.style.color = 'red'; // Change the color to red to indicate an error
-                    auction.parentNode.insertBefore(errorElement, auction.nextSibling);
-                
-                }        
-            } else if (data["type"] == "delete_error") {
+            } else if (data["type"] == "end_dummy") {
+                var dummyElement = document.getElementById('dummy-message');
+                if (dummyElement) {
+                    dummyElement.parentNode.removeChild(dummyElement);
+                }
+            }
+            else if (data["type"] == "delete_error") {
                 var errorElement = document.getElementById('error-message');
                 if (errorElement) {
                     errorElement.parentNode.removeChild(errorElement);
@@ -249,14 +255,49 @@
             </div>
         `;
 
-                } else {
+                }
+                else {
                     console.log("Started cardplay!")
                     var trickCounter = document.querySelector('trick-counter')
                     trickCounter.style.display = 'block';
-                    trickCounter.setContract(data["contract"] + (data["redoubled"] ? "XX" : (data["doubled"] ? "X" : ""))); 
+                    trickCounter.setContract(data["contract"] + (data["redoubled"] ? "XX" : (data["doubled"] ? "X" : "")));
                     trickCounter.setDeclarer(data["declarer"])
                     currentState = "cardplay";
                 }
+            } else if (data["type"] == end_cardplay) {
+                result = data["result"];
+                var trickCounter = document.querySelector('trick-counter')
+                fetch('/record_result', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "hand_number": "{{ boardnumber }}",
+                        "dealer": "{{ dealer }}",
+                        "vulnerability": "{{ vulnerability }}",
+                        "contract": trickCounter.contract,
+                        "declarer": trickCounter.declarer,
+                        "result": result,
+                        "score": 0,
+                        "imps": 0
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle response data
+                    })
+                    .catch(error => {
+                        // Handle error
+                    });
+                document.body.innerHTML = `
+            <div class="container text-center">
+                <div class="row justify-content-center align-items-center" style="height: 100vh;">
+                    <div class="col-12">
+                        <h1 class="display-4">Result: ${result}</h1>
+                        <button class="btn btn-primary mt-5" onclick="window.location.href='/watch?' + new Date().getTime();">Back</button>                </div>
+            </div>
+        `;
             }
         });
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -296,7 +337,12 @@
                     if (auction.undo()) socket.emit("undo");
                 }
                 else {
+                    var trickCounter = document.querySelector('trick-counter')
                     if (trickCounter.undo()) socket.emit("undo");
+                    if (document.getElementById('dummy-message')) {
+                        var dummyElement = document.getElementById('dummy-message');
+                        dummyElement.textContent = dummyElement.textContent === 'Dummy:' ? dummyElement.parentNode.removeChild(dummyElement) : dummyElement.textContent.slice(0, -3);
+                    }
                 }
             });
 
