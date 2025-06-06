@@ -133,7 +133,7 @@ class MainCam(Camera):
         return thresh, detector_image, output
 
 if __name__ == "__main__":
-    with MainCam(config.MAINCAM_INDEX, config.MAINCAM_WIDTH, config.MAINCAM_HEIGHT) as cam:
+    with MainCam(1, config.MAINCAM_WIDTH, config.MAINCAM_HEIGHT) as cam:
         #cam.create_mask()
         while True:
             thresh, detector_image, output = cam.detect_cards(draw=True)
